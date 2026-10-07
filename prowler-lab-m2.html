@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<!-- build: 2026100701 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 2: Threat Detection and Cloud Security Posture Management — Prowler Security Compliance Labs</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--blue-l:#eaf3fb;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--ok-bg:#e8f6ee;--no:#b5341a;--no-bg:#fdecea;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;--code:#0f1e2c;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px}
+a{color:var(--blue)}
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.topbar-in{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{background:var(--blue);color:#fff;font-weight:700;font-size:12.5px;padding:4px 11px;border-radius:20px;letter-spacing:.3px;text-decoration:none}
+.crumb{color:var(--mut);font-size:13px}
+.user{margin-left:auto;font-size:12.5px;color:var(--mut);display:flex;align-items:center;gap:10px}
+.signout{background:none;border:0;color:var(--blue);font-size:12.5px;cursor:pointer;text-decoration:underline;font-family:inherit;padding:0}
+.wrap{max-width:980px;margin:0 auto;padding:26px 20px 70px}
+#app{display:none}
+.hero{margin:6px 0 22px}
+.hero .kicker{color:var(--blue);font-weight:700;font-size:13px;letter-spacing:.4px;text-transform:uppercase}
+.hero h1{font-size:27px;line-height:1.25;margin:4px 0 8px}
+.hero p{color:var(--mut);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px 11px;font-size:12.5px;color:var(--mut)}
+.chip b{color:var(--ink)}
+.toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:0 0 22px}
+.toc h3{margin:0 0 6px;font-size:14px}
+.toc ol{margin:0;padding-left:20px;font-size:14px}
+section.sec{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:0 1px 3px rgba(20,50,80,.04)}
+section.sec h2{font-size:19px;margin:0 0 10px;color:var(--blue-d)}
+section.sec h3{font-size:15.5px;margin:18px 0 6px}
+section.sec p{margin:8px 0}
+.limits{background:var(--amber-bg);border:1px solid #f0cf86;border-left:5px solid #e0a030;border-radius:12px;padding:16px 20px;margin:0 0 18px}
+.limits h2{margin:0 0 6px;font-size:16px;color:var(--amber)}
+.limits ul{margin:6px 0 0;padding-left:20px}
+.limits li{margin:4px 0}
+.note{border-radius:10px;padding:11px 14px;margin:12px 0;font-size:14px}
+.note.info{background:var(--blue-l);border:1px solid #cfe2f3}
+.note.warn{background:var(--amber-bg);border:1px solid #f0cf86}
+.note.cost{background:#f3f0fb;border:1px solid #ddd3f3}
+.note.ok{background:var(--ok-bg);border:1px solid #bfe4cd}
+.code{position:relative;background:var(--code);border-radius:10px;margin:10px 0 14px;overflow:hidden}
+.code-title{background:#1c3044;color:#cfe2f3;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:6px 12px}
+.code pre{margin:0;padding:14px 14px;overflow-x:auto}
+.code code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.8px;line-height:1.55;color:#e6eef6;white-space:pre}
+.code .copy{position:absolute;right:8px;top:6px;background:#2a4560;color:#fff;border:0;border-radius:6px;font-size:11.5px;padding:3px 9px;cursor:pointer;font-family:inherit}
+.code .copy:hover{background:var(--blue)}
+.diff code span{display:block}
+.diff .add{background:rgba(46,160,67,.22);color:#c8f5d2}
+.diff .del{background:rgba(220,60,40,.22);color:#ffd2cc}
+.diff .ctx{color:#b9c7d4}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+p code,li code,td code{background:#eef3f8;border-radius:4px;padding:1px 5px;word-break:break-word}
+.tbl{overflow-x:auto;margin:10px 0 14px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th{background:var(--blue);color:#fff;text-align:left;padding:8px 10px;font-weight:600}
+td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+tr:nth-child(even) td{background:#f8fbfd}
+.before{color:var(--no);font-weight:600}
+.after{color:var(--ok);font-weight:600}
+details.file{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:#fbfdff}
+details.file summary{cursor:pointer;padding:10px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;font-weight:600}
+details.file .code{margin:0 10px 10px}
+/* assessment */
+.assess .q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;background:#fbfdff}
+.assess .q-t{font-weight:600;margin-bottom:8px}
+.assess label.opt{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:8px;cursor:pointer;margin:3px 0;border:1px solid transparent}
+.assess label.opt:hover{background:var(--blue-l)}
+.assess label.opt input{margin-top:4px}
+.assess .q.done label.opt{cursor:default}
+.assess .q.done label.opt:hover{background:none}
+.assess label.opt.right{background:var(--ok-bg);border-color:#bfe4cd}
+.assess label.opt.wrong{background:var(--no-bg);border-color:#f3c3bb}
+.assess .expl{display:none;margin-top:8px;font-size:14px;background:#fff;border-left:4px solid var(--blue);padding:8px 12px;border-radius:6px}
+.assess .q.done .expl{display:block}
+.assess .expl b.r{color:var(--ok)}.assess .expl b.w{color:var(--no)}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:11px 18px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--blue-d)}
+.btn:disabled{background:#a9bccd;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.ghost:hover{background:var(--blue-l)}
+.result{border-radius:12px;padding:14px 16px;margin:14px 0;font-weight:600}
+.result.pass{background:var(--ok-bg);color:var(--ok);border:1px solid #bfe4cd}
+.result.fail{background:var(--no-bg);color:var(--no);border:1px solid #f3c3bb}
+.result small{display:block;font-weight:400;color:var(--ink);margin-top:4px}
+.attempts{font-size:13px;color:var(--mut);margin-top:6px}
+.complete-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.complete-box .status{font-size:14px;color:var(--mut)}
+.complete-box .status.done{color:var(--ok);font-weight:700}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:30px}
+/* dashboard */
+.progress{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:var(--blue);width:0}
+.mods{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.mods{grid-template-columns:1fr}}
+.mod{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.mod .num{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.4px}
+.mod h3{margin:3px 0 6px;font-size:16.5px}
+.mod p{margin:0 0 12px;color:var(--mut);font-size:13.5px}
+.mod .meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px}
+.st{font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px}
+.st.ns{background:#eef2f6;color:var(--mut)}
+.st.ip{background:var(--amber-bg);color:var(--amber)}
+.st.ps{background:var(--blue-l);color:var(--blue-d)}
+.st.cp{background:var(--ok-bg);color:var(--ok)}
+.score{font-size:12.5px;color:var(--mut)}
+@media(max-width:600px){section.sec{padding:18px 16px}.hero h1{font-size:23px}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="badge" href="index.html?v=2026100701">Prowler Labs</a>
+  <span class="crumb">Module 2 of 8</span>
+  <span class="user" id="user"></span>
+</div></div>
+<div class="wrap" id="app">
+  <div class="hero">
+    <div class="kicker">Module 2</div>
+    <h1>Threat Detection and Cloud Security Posture Management</h1>
+    <p>Turn on the services that watch for threats and that collect security findings in one place. Use cases 1: Threat Detection and 2: Cloud Security Posture Management.</p>
+    <div class="chips"><span class="chip"><b>Use cases:</b> 1. Threat Detection, 2. Cloud Security Posture Management</span><span class="chip"><b>Services:</b> GuardDuty, Security Hub</span><span class="chip"><b>Time:</b> about 60 minutes</span><span class="chip"><b>Cost:</b> free trials</span></div>
+  </div>
+  <div class="limits"><h2>Limits of what Prowler checks in this module</h2><ul><li>Prowler checks that GuardDuty and Security Hub are turned on and whether high-severity findings are open. It does not detect threats itself.</li><li>Prowler does not investigate or respond to findings. The incident response process required by ISO 27001, SOC 2, HIPAA and PCI-DSS is outside what Prowler checks.</li><li>Sample findings created for practice look like real findings. They must be archived so that they do not hide real ones.</li></ul></div>
+  <nav class="toc"><h3>In this module</h3><ol><li><a href="#about">What these two use cases mean</a></li><li><a href="#build">Step 1: Check the starting state (before state)</a></li><li><a href="#scan-before">Step 2: Scan and read the results</a></li><li><a href="#fix">Step 3: Turn on GuardDuty and Security Hub</a></li><li><a href="#archive">Step 4: Archive the sample findings and send Prowler findings to Security Hub</a></li><li><a href="#cleanup">Step 5: Add this module to the clean-up script</a></li><li><a href="#files">Complete files for this module</a></li><li><a href="#assessment">Module assessment</a></li></ol></nav>
+  <section class="sec" id="about"><h2>What these two use cases mean</h2>
+<div class="tbl"><table class=""><thead><tr><th>Use case</th><th>AWS service</th><th>What it does</th></tr></thead><tbody><tr><td>1. Threat Detection</td><td><b>Amazon GuardDuty</b></td><td>Watches CloudTrail events, VPC Flow Logs and DNS logs for signs of attack, such as calls from known bad IP addresses or a server mining cryptocurrency. It reports each problem as a <b>finding</b>.</td></tr><tr><td>2. Cloud Security Posture Management</td><td><b>AWS Security Hub</b> (shown as <b>Security Hub CSPM</b> in the AWS console)</td><td>Checks your settings against security standards and collects findings from GuardDuty, Inspector, Prowler and other tools in one place.</td></tr></tbody></table></div>
+<p>Prowler does not detect attacks. It checks that these services are turned on, and whether high-severity findings are still open. In this module you also send Prowler's own findings into Security Hub, so all results can be viewed together.</p>
+<div class="note cost"><b>Cost:</b> GuardDuty and Security Hub each have a 30-day free trial for accounts that have not used them before. After the trial they charge based on the amount of data and checks. Turn them off at the end of the course if you do not want to keep them.</div>
+</section><section class="sec" id="build"><h2>Step 1: Check the starting state (before state)</h2>
+<p>There is nothing to build: in a new account both services are off. This script only reports their current state, so you know what the before scan will show. It never turns anything off.</p>
+<div class="code"><div class="code-title">build/m2-build.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 2 build: check that GuardDuty and Security Hub are off (before state)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+D=$(aws guardduty list-detectors "${A[@]}" --query 'DetectorIds[0]' --output text)
+if [ "$D" = "None" ]; then
+  echo "GuardDuty: off in $AWS_REGION (expected before state)."
+else
+  echo "GuardDuty: already on in $AWS_REGION (detector $D). The before scan will show it as on."
+fi
+
+if aws securityhub describe-hub "${A[@]}" &gt;/dev/null 2&gt;&amp;1; then
+  echo "Security Hub: already on in $AWS_REGION. The before scan will show it as on."
+else
+  echo "Security Hub: off in $AWS_REGION (expected before state)."
+fi</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">chmod +x build/m2-build.sh
+./build/m2-build.sh</code></pre></div>
+</section><section class="sec" id="scan-before"><h2>Step 2: Scan and read the results</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">source ./env.sh
+pscan --service guardduty securityhub -o scans/m2-before</code></pre></div>
+<div class="tbl"><table class=""><thead><tr><th>Check</th><th>Expected result</th><th>Why it fails</th></tr></thead><tbody><tr><td><code>guardduty_is_enabled</code></td><td>FAIL</td><td>No GuardDuty detector is running in the region, so nothing watches for attacks.</td></tr><tr><td><code>securityhub_enabled</code></td><td>FAIL</td><td>Security Hub is off, so there is no central place for security findings and no standard checks.</td></tr></tbody></table></div>
+<h3>Link to the compliance frameworks</h3>
+<div class="tbl"><table class=""><thead><tr><th>Framework</th><th>Related requirement area</th></tr></thead><tbody><tr><td>CIS AWS Foundations Benchmark</td><td>Monitoring section: Security Hub turned on</td></tr><tr><td>PCI-DSS v4.0</td><td>Requirement 10.7 and 11.5: detect failures of security controls and detect intrusions</td></tr><tr><td>ISO 27001:2022</td><td>Control 8.16 Monitoring activities and 5.25 assessment of security events</td></tr><tr><td>SOC 2</td><td>CC7.2 and CC7.3: detect and evaluate security events</td></tr><tr><td>HIPAA</td><td>164.308(a)(1)(ii)(D) information system activity review, 164.308(a)(6) security incident procedures</td></tr><tr><td>GDPR</td><td>Article 32 security of processing, Article 33 notification of a personal data breach</td></tr><tr><td>AWS Well-Architected, Security Pillar</td><td>Detection: capture and analyze events, investigate findings</td></tr></tbody></table></div>
+</section><section class="sec" id="fix"><h2>Step 3: Turn on GuardDuty and Security Hub</h2>
+<div class="code"><div class="code-title">fix/m2-fix.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 2 fix: turn on GuardDuty and Security Hub (after state, part 1)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+# 1. GuardDuty: use the existing detector or create one
+DETECTOR_ID=$(aws guardduty list-detectors "${A[@]}" --query 'DetectorIds[0]' --output text)
+if [ "$DETECTOR_ID" = "None" ]; then
+  DETECTOR_ID=$(aws guardduty create-detector "${A[@]}" --enable \
+    --finding-publishing-frequency FIFTEEN_MINUTES --query DetectorId --output text)
+fi
+save_id DETECTOR_ID "$DETECTOR_ID"
+
+# Sample findings let you practise reading findings without a real attack
+aws guardduty create-sample-findings "${A[@]}" --detector-id "$DETECTOR_ID"
+
+# 2. Security Hub with the default security standards
+aws securityhub enable-security-hub "${A[@]}" --enable-default-standards \
+  || echo "Security Hub is already on."
+
+# 3. Accept findings from Prowler in Security Hub
+aws securityhub enable-import-findings-for-product "${A[@]}" \
+  --product-arn "arn:aws:securityhub:$AWS_REGION::product/prowler/prowler" \
+  || echo "Prowler integration is already on."
+
+# 4. Let the scan profile send findings to Security Hub (and nothing else)
+cat &gt; policies/prowler-securityhub.json &lt;&lt;EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {"Effect": "Allow",
+     "Action": ["securityhub:BatchImportFindings", "securityhub:GetFindings"],
+     "Resource": "*"}
+  ]
+}
+EOF
+aws iam put-group-policy "${G[@]}" --group-name prowler-scanners \
+  --policy-name prowler-securityhub --policy-document file://policies/prowler-securityhub.json
+
+echo "Module 2 fix (part 1) complete. Wait about 5 minutes for the sample findings to appear."</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">chmod +x fix/m2-fix.sh
+./fix/m2-fix.sh</code></pre></div>
+<div class="note info"><code>--enable-default-standards</code> turns on the AWS Foundational Security Best Practices standard and a CIS standard in Security Hub. These use the AWS Config recorder you started in Module 1.</div>
+<div class="note info">The scan group gets only two extra actions: <code>securityhub:BatchImportFindings</code> and <code>securityhub:GetFindings</code>. Prowler needs them to send findings to Security Hub. The profile still cannot change any resource.</div>
+<h3>Read a high-severity finding</h3>
+<p>Wait about 5 minutes, then scan again. The sample findings include high-severity ones.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">pscan --service guardduty securityhub -o scans/m2-middle</code></pre></div>
+<div class="tbl"><table class=""><thead><tr><th>Check</th><th>Result now</th><th>Why</th></tr></thead><tbody><tr><td><code>guardduty_is_enabled</code></td><td>PASS</td><td>The detector is running.</td></tr><tr><td><code>guardduty_no_high_severity_findings</code></td><td>FAIL</td><td>The sample findings include high-severity findings that are still open.</td></tr><tr><td><code>securityhub_enabled</code></td><td>PASS</td><td>Security Hub is on with standards turned on.</td></tr></tbody></table></div>
+<p>Open GuardDuty in the AWS console and look at one sample finding. Every sample finding has <b>[SAMPLE]</b> in its title. Note its type (for example <code>CryptoCurrency:EC2/BitcoinTool.B!DNS</code>), severity, the affected resource and the recommended action.</p>
+<div class="note warn">In a real account, never archive a finding without investigating it first. Here you archive the sample findings because they are not real and would hide real ones.</div>
+</section><section class="sec" id="archive"><h2>Step 4: Archive the sample findings and send Prowler findings to Security Hub</h2>
+<div class="code"><div class="code-title">fix/m2-archive.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 2 fix: archive the GuardDuty sample findings (after state, part 2)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+IDS=$(aws guardduty list-findings "${A[@]}" --detector-id "$DETECTOR_ID" \
+  --finding-criteria '{"Criterion": {"service.archived": {"Eq": ["false"]},
+                                     "service.additionalInfo.sample": {"Eq": ["true"]}}}' \
+  --query 'FindingIds' --output text)
+
+if [ -n "$IDS" ] &amp;&amp; [ "$IDS" != "None" ]; then
+  # archive-findings accepts up to 50 IDs per call
+  echo "$IDS" | tr '\t' '\n' | xargs -n 50 \
+    aws guardduty archive-findings "${A[@]}" --detector-id "$DETECTOR_ID" --finding-ids
+  echo "Sample findings archived."
+else
+  echo "No open sample findings found."
+fi</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">chmod +x fix/m2-archive.sh
+./fix/m2-archive.sh
+
+# Scan again and send the results to Security Hub
+pscan --service guardduty securityhub --security-hub -o scans/m2-after</code></pre></div>
+<p>The <code>--security-hub</code> option sends each Prowler finding to Security Hub. Open Security Hub (Security Hub CSPM) in the AWS console, go to <b>Findings</b>, and filter by <b>Product name: Prowler</b>. You now see Prowler's findings next to the findings from GuardDuty and the Security Hub standards.</p>
+<h3>What changed</h3>
+<div class="code diff"><div class="code-title">GuardDuty</div><pre><code><span class="ctx">  GuardDuty</span><span class="del">- no detector</span><span class="add">+ detector &lt;DETECTOR_ID&gt;: enabled, findings published every 15 minutes</span><span class="add">+ sample findings: created, then archived</span></code></pre></div>
+<div class="code diff"><div class="code-title">Security Hub</div><pre><code><span class="ctx">  Security Hub</span><span class="del">- off</span><span class="add">+ on, with default standards</span><span class="add">+ accepts findings from the Prowler integration</span><span class="ctx">  prowler-scanners group</span><span class="add">+ inline policy prowler-securityhub: BatchImportFindings, GetFindings</span></code></pre></div>
+<div class="tbl"><table class="ba"><thead><tr><th>Resource or setting</th><th>Before (weak)</th><th>After (fixed)</th><th>Prowler checks</th></tr></thead><tbody><tr><td>GuardDuty</td><td><span class="before">Off</span></td><td><span class="after">On, sample findings archived</span></td><td><code>guardduty_is_enabled</code><br><code>guardduty_no_high_severity_findings</code></td></tr><tr><td>Security Hub</td><td><span class="before">Off</span></td><td><span class="after">On with standards turned on</span></td><td><code>securityhub_enabled</code></td></tr><tr><td>Prowler findings</td><td><span class="before">Only in local files</span></td><td><span class="after">Also in Security Hub</span></td><td><code>(sent with the --security-hub option)</code></td></tr></tbody></table></div>
+</section><section class="sec" id="cleanup"><h2>Step 5: Add this module to the clean-up script</h2>
+<p>Keep both services on for now: later modules send findings to them. Paste this block into <code>cleanup.sh</code> directly <b>below</b> the <code>set +e</code> line, above the Module 1 block.</p>
+<div class="code"><div class="code-title">cleanup.sh — Module 2 block</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># --- Module 2: Threat Detection and Cloud Security Posture Management ---
+aws iam delete-group-policy "${G[@]}" --group-name prowler-scanners --policy-name prowler-securityhub
+aws securityhub disable-import-findings-for-product "${A[@]}" \
+  --product-subscription-arn "arn:aws:securityhub:$AWS_REGION:$ACCOUNT_ID:product-subscription/prowler/prowler"
+aws securityhub disable-security-hub "${A[@]}"
+aws guardduty delete-detector "${A[@]}" --detector-id "$DETECTOR_ID"</code></pre></div>
+</section><section class="sec" id="files"><h2>Complete files for this module</h2><details class="file"><summary>build/m2-build.sh</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 2 build: check that GuardDuty and Security Hub are off (before state)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+D=$(aws guardduty list-detectors "${A[@]}" --query 'DetectorIds[0]' --output text)
+if [ "$D" = "None" ]; then
+  echo "GuardDuty: off in $AWS_REGION (expected before state)."
+else
+  echo "GuardDuty: already on in $AWS_REGION (detector $D). The before scan will show it as on."
+fi
+
+if aws securityhub describe-hub "${A[@]}" &gt;/dev/null 2&gt;&amp;1; then
+  echo "Security Hub: already on in $AWS_REGION. The before scan will show it as on."
+else
+  echo "Security Hub: off in $AWS_REGION (expected before state)."
+fi</code></pre></div></details><details class="file"><summary>fix/m2-fix.sh</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 2 fix: turn on GuardDuty and Security Hub (after state, part 1)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+# 1. GuardDuty: use the existing detector or create one
+DETECTOR_ID=$(aws guardduty list-detectors "${A[@]}" --query 'DetectorIds[0]' --output text)
+if [ "$DETECTOR_ID" = "None" ]; then
+  DETECTOR_ID=$(aws guardduty create-detector "${A[@]}" --enable \
+    --finding-publishing-frequency FIFTEEN_MINUTES --query DetectorId --output text)
+fi
+save_id DETECTOR_ID "$DETECTOR_ID"
+
+# Sample findings let you practise reading findings without a real attack
+aws guardduty create-sample-findings "${A[@]}" --detector-id "$DETECTOR_ID"
+
+# 2. Security Hub with the default security standards
+aws securityhub enable-security-hub "${A[@]}" --enable-default-standards \
+  || echo "Security Hub is already on."
+
+# 3. Accept findings from Prowler in Security Hub
+aws securityhub enable-import-findings-for-product "${A[@]}" \
+  --product-arn "arn:aws:securityhub:$AWS_REGION::product/prowler/prowler" \
+  || echo "Prowler integration is already on."
+
+# 4. Let the scan profile send findings to Security Hub (and nothing else)
+cat &gt; policies/prowler-securityhub.json &lt;&lt;EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {"Effect": "Allow",
+     "Action": ["securityhub:BatchImportFindings", "securityhub:GetFindings"],
+     "Resource": "*"}
+  ]
+}
+EOF
+aws iam put-group-policy "${G[@]}" --group-name prowler-scanners \
+  --policy-name prowler-securityhub --policy-document file://policies/prowler-securityhub.json
+
+echo "Module 2 fix (part 1) complete. Wait about 5 minutes for the sample findings to appear."</code></pre></div></details><details class="file"><summary>fix/m2-archive.sh</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 2 fix: archive the GuardDuty sample findings (after state, part 2)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+IDS=$(aws guardduty list-findings "${A[@]}" --detector-id "$DETECTOR_ID" \
+  --finding-criteria '{"Criterion": {"service.archived": {"Eq": ["false"]},
+                                     "service.additionalInfo.sample": {"Eq": ["true"]}}}' \
+  --query 'FindingIds' --output text)
+
+if [ -n "$IDS" ] &amp;&amp; [ "$IDS" != "None" ]; then
+  # archive-findings accepts up to 50 IDs per call
+  echo "$IDS" | tr '\t' '\n' | xargs -n 50 \
+    aws guardduty archive-findings "${A[@]}" --detector-id "$DETECTOR_ID" --finding-ids
+  echo "Sample findings archived."
+else
+  echo "No open sample findings found."
+fi</code></pre></div></details><details class="file"><summary>cleanup.sh (Module 2 block)</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># --- Module 2: Threat Detection and Cloud Security Posture Management ---
+aws iam delete-group-policy "${G[@]}" --group-name prowler-scanners --policy-name prowler-securityhub
+aws securityhub disable-import-findings-for-product "${A[@]}" \
+  --product-subscription-arn "arn:aws:securityhub:$AWS_REGION:$ACCOUNT_ID:product-subscription/prowler/prowler"
+aws securityhub disable-security-hub "${A[@]}"
+aws guardduty delete-detector "${A[@]}" --detector-id "$DETECTOR_ID"</code></pre></div></details></section>
+  <section class="sec assess" id="assessment">
+    <h2>Module assessment</h2>
+    <p>10 questions. Pass mark: 70%. You can take the assessment as many times as you need. After each attempt you will see the correct answer and a short explanation for every question.</p>
+    <div id="quiz"></div>
+    <div id="quiz-result"></div>
+    <button class="btn" id="quiz-submit" type="button">Submit answers</button>
+    <button class="btn ghost" id="quiz-retake" type="button" style="display:none">Retake the assessment</button>
+    <div class="attempts" id="attempts"></div>
+  </section>
+  <section class="sec">
+    <h2>Complete this module</h2>
+    <div class="complete-box">
+      <button class="btn" id="mark-complete" type="button" disabled>Mark module as complete</button>
+      <span class="status" id="complete-status"></span>
+    </div>
+  </section>
+  <div class="navrow"><a class="btn ghost" href="prowler-lab-m1.html?v=2026100701">&larr; Module 1</a><a class="btn" href="prowler-lab-m3.html?v=2026100701">Module 3: Vulnerability Management and Application Security Testing &rarr;</a></div>
+  <div class="foot">Prowler Security Compliance Labs · Module 2 · Build 2026100701</div>
+</div>
+
+
+<script>
+/* SF auth gate — Google SSO (popup, admins only) + email/password (learners).
+   Same logic as the existing SF Knowledge Hub course pages. */
+(function () {
+const firebaseConfig = {
+  apiKey: "AIzaSyC-I-IOCq2fCwa471fsD5xOn6SYQSBDp7Q",
+  authDomain: "sfcertification-grafana.firebaseapp.com",
+  projectId: "sfcertification-grafana",
+  storageBucket: "sfcertification-grafana.firebasestorage.app",
+  messagingSenderId: "227322696511",
+  appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+};
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+  const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
+  // Google SSO is restricted to these admin addresses ONLY. Everyone else signs in
+  // with email/password (that path is unchanged and still uses validDomain()).
+  const ADMIN_SSO = ["jv.ravichandran@sourcefuse.com","noushin.khan@sourcefuse.com"];
+  let auth, GoogleProvider, signInRedirect, signInPopup, getRedirect, signInEmail, onAuth, signOutFn, appMod;
+  let readyCb = null, done = false;
+
+  async function initFirebase() {
+    appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    signInPopup = (p) => authMod.signInWithPopup(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+  function styleTag(){return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:400px;box-shadow:0 12px 40px rgba(10,30,55,.25)}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 6px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--blue,#1a6eb5);border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:var(--blue-d,#12507f)}
+    .sf-g{background:#fff;color:#1a6eb5;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+  </style>`;}
+  function overlayHTML(){return `
+    <div class="sf-auth-backdrop" id="sf-auth"><div class="sf-auth-card">
+      <div class="sf-auth-badge">SF Knowledge Hub</div>
+      <h2>Prowler Security Compliance Labs</h2>
+      <p class="sf-auth-sub">Sign in with your SourceFuse Google account to access the course and save your progress.</p>
+      <button class="sf-google" id="sf-google"><span class="sf-g">G</span> Sign in with Google</button>
+      <div class="sf-or"><span>OR</span></div>
+      <label class="sf-lbl">Email</label>
+      <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+      <label class="sf-lbl">Password</label>
+      <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <button class="sf-signin" id="sf-signin">Sign in with email</button>
+      <div class="sf-err" id="sf-err"></div>
+    </div></div>`;}
+  function fail(m){const e=document.getElementById("sf-err");if(e)e.textContent=m;}
+  function validDomain(x){if(typeof x!=="string")return false;var e=x.toLowerCase();return e.endsWith("@"+ALLOWED_DOMAIN)||ALLOWED_EXTRA.includes(e);}
+  function validGoogle(x){if(typeof x!=="string")return false;return ADMIN_SSO.includes(x.toLowerCase());}
+  function isGoogleUser(u){try{return !!(u&&u.providerData&&u.providerData.some(function(p){return p&&p.providerId==="google.com";}));}catch(_){return false;}}
+  function proceed(email){if(done)return;done=true;const el=document.getElementById("sf-auth");if(el)el.remove();if(readyCb)readyCb(email,signOutFn);}
+  function wireOverlay(){
+    document.getElementById("sf-google").addEventListener("click",async()=>{
+      fail("");
+      if(!signInRedirect)return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      const p=new GoogleProvider();p.setCustomParameters({hd:ALLOWED_DOMAIN,prompt:"select_account"});
+      // Popup avoids the cross-site redirect handshake that browsers now block.
+      if(signInPopup){
+        try{
+          const r=await signInPopup(p);
+          const email=(r&&r.user&&r.user.email)||"";
+          if(!validGoogle(email)){await signOutFn();return fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          return proceed(email);
+        }catch(e){
+          console.log("[auth] signInWithPopup failed; code:",e&&e.code,"| message:",e&&e.message);
+          const blocked=e&&(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment");
+          if(!blocked)return fail("Google sign-in couldn't complete. Use email/password below.");
+        }
+      }
+      try{
+        try{sessionStorage.setItem("sf-google-pending","1");}catch(_){}
+        await signInRedirect(p);}
+      catch(e){console.log("[auth] signInWithRedirect failed; code:",e&&e.code,"| message:",e&&e.message);fail("Google sign-in couldn't start. Use email/password below.");}
+    });
+    document.getElementById("sf-signin").addEventListener("click",async()=>{
+      fail("");
+      const email=(document.getElementById("sf-email").value||"").trim();
+      const pass=document.getElementById("sf-pass").value||"";
+      if(!validDomain(email))return fail("Email must be an @sourcefuse.com address.");
+      if(!pass)return fail("Enter your password.");
+      try{const r=await signInEmail(email,pass);proceed((r.user&&r.user.email)||email);}
+      catch(e){console.log("[auth] signInEmail failed; code:",e&&e.code,"| message:",e&&e.message);fail("Incorrect email or password.");}
+    });
+  }
+  async function mount(onReady){
+    readyCb=onReady;
+    document.head.insertAdjacentHTML("beforeend",styleTag());
+    document.body.insertAdjacentHTML("beforeend",overlayHTML());
+    try{await initFirebase();}catch(e){fail("Auth service loading… (Google SSO needs the deployed https host).");}
+    if(getRedirect){
+      try{const res=await getRedirect();
+        if(res&&res.user){const email=res.user.email;
+          if(!validGoogle(email)){await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          else{proceed(email);return;}}
+        else if(sessionStorage.getItem("sf-google-pending")==="1"){
+          sessionStorage.removeItem("sf-google-pending");
+          fail("Google sign-in didn't complete (browser blocked the sign-in handshake). Use email/password below.");
+        }
+      }catch(e){
+        console.log("[auth] getRedirectResult error; code:",e&&e.code,"| message:",e&&e.message);
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    if(onAuth){onAuth(async(u)=>{
+      if(!u)return;
+      if(isGoogleUser(u)){
+        if(validGoogle(u.email))proceed(u.email);
+        else{await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+        return;
+      }
+      if(validDomain(u.email))proceed(u.email);
+    });}
+    wireOverlay();
+  }
+  window.SFAuth={mount};
+})();
+</script>
+
+
+<script>
+/* Course progress for the signed-in learner. */
+window.PLStore=(function(){
+  var PREFIX="prowlerlab_v1__";
+  function key(email){return PREFIX+String(email||"").replace(/[^a-z0-9]/gi,"_").toLowerCase();}
+  function load(email){try{var s=JSON.parse(localStorage.getItem(key(email)));if(s&&s.modules)return s;}catch(e){}return {modules:{}};}
+  function save(email,s){try{localStorage.setItem(key(email),JSON.stringify(s));}catch(e){}}
+  function mod(s,k){if(!s.modules[k])s.modules[k]={attempts:[],passed:false,bestPct:0,complete:false};return s.modules[k];}
+  return {
+    load:load,
+    get:function(email,k){return mod(load(email),k);},
+    addAttempt:function(email,k,score,total,passMark){
+      var s=load(email),m=mod(s,k),pct=Math.round(score/total*100);
+      m.attempts.push({attempt:m.attempts.length+1,score:score,total:total,pct:pct,passed:pct>=passMark,ts:Date.now()});
+      if(pct>m.bestPct)m.bestPct=pct;
+      if(pct>=passMark&&!m.passed){m.passed=true;m.passedAt=Date.now();m.passedPct=pct;}
+      save(email,s);return m;
+    },
+    complete:function(email,k){var s=load(email),m=mod(s,k);if(!m.passed)return m;m.complete=true;m.completedAt=Date.now();save(email,s);return m;}
+  };
+})();
+</script>
+
+<script>window.PL_MODULE={"key": "prowler-lab-m2", "pass": 70, "questions": [{"q": "What does Prowler check about Amazon GuardDuty?", "o": ["It detects attacks itself using GuardDuty's rules", "It blocks traffic from bad IP addresses", "It checks that GuardDuty is turned on and whether high-severity findings are open", "It archives old findings"], "a": 2, "e": "Prowler only checks the GuardDuty settings and open findings. GuardDuty is the service that detects threats."}, {"q": "Why was the check <code>guardduty_no_high_severity_findings<\/code> failing after GuardDuty was turned on?", "o": ["The scan profile could not read GuardDuty", "The sample findings included open high-severity findings", "GuardDuty was still off", "Security Hub was off"], "a": 1, "e": "The sample findings look like real findings. While they were open, the check correctly reported high-severity findings."}, {"q": "In a real account, what should you do before archiving a GuardDuty finding?", "o": ["Investigate it to confirm it is not a real problem", "Turn off GuardDuty", "Nothing; archive it right away", "Delete the affected resource"], "a": 0, "e": "Archiving hides a finding. Only archive after you have checked it is harmless or fixed."}, {"q": "What is the main job of AWS Security Hub in this course?", "o": ["Recording API calls", "Detecting malware on servers", "Collecting findings from many tools in one place and checking settings against standards", "Encrypting data"], "a": 2, "e": "Security Hub (Security Hub CSPM) collects findings and runs security standards. That is cloud security posture management."}, {"q": "What extra permissions did the scan group get in this module, and why?", "o": ["BatchImportFindings and GetFindings, so Prowler can send findings to Security Hub", "Administrator access, to fix findings", "None", "GuardDuty write access, to archive findings"], "a": 0, "e": "Sending findings to Security Hub needs these two actions. The profile still cannot change any resource."}, {"q": "Which Prowler option sends findings to Security Hub?", "o": ["<code>--service securityhub<\/code>", "<code>--security-hub<\/code>", "<code>--status FAIL<\/code>", "<code>--compliance securityhub<\/code>"], "a": 1, "e": "<code>--security-hub<\/code> sends the findings of the scan to Security Hub in the scanned region."}, {"q": "Why does Security Hub need the AWS Config recorder from Module 1?", "o": ["Its security standards run as AWS Config rules", "To store its findings", "To read GuardDuty findings", "To send emails"], "a": 0, "e": "Security Hub's standards use AWS Config rules, which need the recorder to be running."}, {"q": "Which requirement area do these checks support in SOC 2?", "o": ["PI1.1 processing integrity", "A1.2 backups", "CC7.2 and CC7.3: detecting and evaluating security events", "CC6.1 logical access"], "a": 2, "e": "SOC 2 CC7.2 and CC7.3 are about monitoring for and evaluating security events, which threat detection supports."}, {"q": "A framework requires a security incident response process. What does Prowler check about it?", "o": ["Whether GuardDuty sends emails", "Nothing; it is a process outside what Prowler checks", "Whether the process document exists", "Whether staff follow the process"], "a": 1, "e": "Incident response is a process carried out by people. Prowler can only show that detection services are on."}, {"q": "How can you tell a GuardDuty sample finding from a real one?", "o": ["Sample findings have no resource", "Sample findings have [SAMPLE] in their title", "Sample findings have low severity only", "Sample findings appear only in Security Hub"], "a": 1, "e": "GuardDuty marks sample findings with [SAMPLE] in the title and a sample flag in the finding details."}]};</script>
+<script>
+(function(){
+  var CFG=window.PL_MODULE;
+  function $(s,r){return (r||document).querySelector(s);}
+  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+
+  // Copy buttons on code blocks
+  $$(".code .copy").forEach(function(b){
+    b.addEventListener("click",function(){
+      var t=b.parentNode.querySelector("code").innerText;
+      var done=function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy";},1400);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+      else{var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){}document.body.removeChild(ta);}
+    });
+  });
+
+  function renderQuiz(){
+    var box=$("#quiz");var html="";
+    CFG.questions.forEach(function(q,i){
+      html+='<div class="q" data-i="'+i+'"><div class="q-t">'+(i+1)+'. '+q.q+'</div>';
+      q.o.forEach(function(o,j){
+        html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>';
+      });
+      html+='<div class="expl"></div></div>';
+    });
+    box.innerHTML=html;
+    $("#quiz-result").innerHTML="";
+    $("#quiz-submit").style.display="";
+    $("#quiz-retake").style.display="none";
+  }
+
+  function grade(email){
+    var answers=[],missing=0;
+    CFG.questions.forEach(function(q,i){
+      var c=$('input[name="q'+i+'"]:checked');
+      if(!c)missing++;answers.push(c?parseInt(c.value,10):-1);
+    });
+    if(missing){$("#quiz-result").innerHTML='<div class="result fail">Answer all questions before you submit. '+missing+' question'+(missing>1?'s are':' is')+' not answered yet.</div>';return;}
+    var score=0;
+    CFG.questions.forEach(function(q,i){
+      var qe=$('.q[data-i="'+i+'"]');qe.classList.add("done");
+      $$("input",qe).forEach(function(inp){inp.disabled=true;});
+      var labels=$$("label.opt",qe);
+      labels[q.a].classList.add("right");
+      var ok=answers[i]===q.a;if(ok)score++;else labels[answers[i]].classList.add("wrong");
+      $(".expl",qe).innerHTML=(ok?'<b class="r">Correct.</b> ':'<b class="w">Not correct.</b> The correct answer is: <b>'+q.o[q.a]+'</b>. ')+q.e;
+    });
+    var total=CFG.questions.length;
+    var m=window.PLStore.addAttempt(email,CFG.key,score,total,CFG.pass);
+    var pct=Math.round(score/total*100);
+    var passed=pct>=CFG.pass;
+    $("#quiz-result").innerHTML='<div class="result '+(passed?'pass':'fail')+'">'+
+      (passed?'You passed: ':'Not passed yet: ')+score+' of '+total+' correct ('+pct+'%). Pass mark: '+CFG.pass+'%.'+
+      '<small>'+(passed?'You can now mark this module as complete.':'Read the explanations under each question, review the module, and try again. You can retake the assessment as many times as you need.')+'</small></div>';
+    $("#quiz-submit").style.display="none";
+    $("#quiz-retake").style.display="";
+    refresh(email);
+    $("#quiz-result").scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+  function refresh(email){
+    var m=window.PLStore.get(email,CFG.key);
+    var att=m.attempts.length;
+    $("#attempts").textContent=att?('Attempts: '+att+' · Best score: '+m.bestPct+'%'+(m.passed?' · Passed':'')):'No attempts yet.';
+    var btn=$("#mark-complete"),st=$("#complete-status");
+    if(m.complete){btn.disabled=true;btn.textContent="Module completed";st.textContent="Completed on "+new Date(m.completedAt).toLocaleDateString();st.className="status done";}
+    else if(m.passed){btn.disabled=false;btn.textContent="Mark module as complete";st.textContent="Assessment passed. You can now mark this module as complete.";st.className="status";}
+    else{btn.disabled=true;btn.textContent="Mark module as complete";st.textContent="Locked until you pass the module assessment ("+CFG.pass+"% or more).";st.className="status";}
+  }
+
+  window.SFAuth.mount(function(email,signOut){
+    $("#user").innerHTML=email+' <button class="signout" id="signout">Sign out</button>';
+    var so=$("#signout");if(so&&signOut)so.onclick=function(){signOut().then(function(){location.reload();});};
+    $("#app").style.display="block";
+    renderQuiz();
+    $("#quiz-submit").onclick=function(){grade(email);};
+    $("#quiz-retake").onclick=function(){renderQuiz();$("#assessment").scrollIntoView({behavior:"smooth"});};
+    $("#mark-complete").onclick=function(){window.PLStore.complete(email,CFG.key);refresh(email);};
+    refresh(email);
+  });
+})();
+</script>
+
+</body></html>
