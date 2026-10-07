@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<!-- build: 2026100701 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 8: Final check and clean-up — Prowler Security Compliance Labs</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--blue-l:#eaf3fb;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--ok-bg:#e8f6ee;--no:#b5341a;--no-bg:#fdecea;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;--code:#0f1e2c;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px}
+a{color:var(--blue)}
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.topbar-in{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{background:var(--blue);color:#fff;font-weight:700;font-size:12.5px;padding:4px 11px;border-radius:20px;letter-spacing:.3px;text-decoration:none}
+.crumb{color:var(--mut);font-size:13px}
+.user{margin-left:auto;font-size:12.5px;color:var(--mut);display:flex;align-items:center;gap:10px}
+.signout{background:none;border:0;color:var(--blue);font-size:12.5px;cursor:pointer;text-decoration:underline;font-family:inherit;padding:0}
+.wrap{max-width:980px;margin:0 auto;padding:26px 20px 70px}
+#app{display:none}
+.hero{margin:6px 0 22px}
+.hero .kicker{color:var(--blue);font-weight:700;font-size:13px;letter-spacing:.4px;text-transform:uppercase}
+.hero h1{font-size:27px;line-height:1.25;margin:4px 0 8px}
+.hero p{color:var(--mut);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px 11px;font-size:12.5px;color:var(--mut)}
+.chip b{color:var(--ink)}
+.toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:0 0 22px}
+.toc h3{margin:0 0 6px;font-size:14px}
+.toc ol{margin:0;padding-left:20px;font-size:14px}
+section.sec{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:0 1px 3px rgba(20,50,80,.04)}
+section.sec h2{font-size:19px;margin:0 0 10px;color:var(--blue-d)}
+section.sec h3{font-size:15.5px;margin:18px 0 6px}
+section.sec p{margin:8px 0}
+.limits{background:var(--amber-bg);border:1px solid #f0cf86;border-left:5px solid #e0a030;border-radius:12px;padding:16px 20px;margin:0 0 18px}
+.limits h2{margin:0 0 6px;font-size:16px;color:var(--amber)}
+.limits ul{margin:6px 0 0;padding-left:20px}
+.limits li{margin:4px 0}
+.note{border-radius:10px;padding:11px 14px;margin:12px 0;font-size:14px}
+.note.info{background:var(--blue-l);border:1px solid #cfe2f3}
+.note.warn{background:var(--amber-bg);border:1px solid #f0cf86}
+.note.cost{background:#f3f0fb;border:1px solid #ddd3f3}
+.note.ok{background:var(--ok-bg);border:1px solid #bfe4cd}
+.code{position:relative;background:var(--code);border-radius:10px;margin:10px 0 14px;overflow:hidden}
+.code-title{background:#1c3044;color:#cfe2f3;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:6px 12px}
+.code pre{margin:0;padding:14px 14px;overflow-x:auto}
+.code code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.8px;line-height:1.55;color:#e6eef6;white-space:pre}
+.code .copy{position:absolute;right:8px;top:6px;background:#2a4560;color:#fff;border:0;border-radius:6px;font-size:11.5px;padding:3px 9px;cursor:pointer;font-family:inherit}
+.code .copy:hover{background:var(--blue)}
+.diff code span{display:block}
+.diff .add{background:rgba(46,160,67,.22);color:#c8f5d2}
+.diff .del{background:rgba(220,60,40,.22);color:#ffd2cc}
+.diff .ctx{color:#b9c7d4}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+p code,li code,td code{background:#eef3f8;border-radius:4px;padding:1px 5px;word-break:break-word}
+.tbl{overflow-x:auto;margin:10px 0 14px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th{background:var(--blue);color:#fff;text-align:left;padding:8px 10px;font-weight:600}
+td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+tr:nth-child(even) td{background:#f8fbfd}
+.before{color:var(--no);font-weight:600}
+.after{color:var(--ok);font-weight:600}
+details.file{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:#fbfdff}
+details.file summary{cursor:pointer;padding:10px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;font-weight:600}
+details.file .code{margin:0 10px 10px}
+/* assessment */
+.assess .q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;background:#fbfdff}
+.assess .q-t{font-weight:600;margin-bottom:8px}
+.assess label.opt{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:8px;cursor:pointer;margin:3px 0;border:1px solid transparent}
+.assess label.opt:hover{background:var(--blue-l)}
+.assess label.opt input{margin-top:4px}
+.assess .q.done label.opt{cursor:default}
+.assess .q.done label.opt:hover{background:none}
+.assess label.opt.right{background:var(--ok-bg);border-color:#bfe4cd}
+.assess label.opt.wrong{background:var(--no-bg);border-color:#f3c3bb}
+.assess .expl{display:none;margin-top:8px;font-size:14px;background:#fff;border-left:4px solid var(--blue);padding:8px 12px;border-radius:6px}
+.assess .q.done .expl{display:block}
+.assess .expl b.r{color:var(--ok)}.assess .expl b.w{color:var(--no)}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:11px 18px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--blue-d)}
+.btn:disabled{background:#a9bccd;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.ghost:hover{background:var(--blue-l)}
+.result{border-radius:12px;padding:14px 16px;margin:14px 0;font-weight:600}
+.result.pass{background:var(--ok-bg);color:var(--ok);border:1px solid #bfe4cd}
+.result.fail{background:var(--no-bg);color:var(--no);border:1px solid #f3c3bb}
+.result small{display:block;font-weight:400;color:var(--ink);margin-top:4px}
+.attempts{font-size:13px;color:var(--mut);margin-top:6px}
+.complete-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.complete-box .status{font-size:14px;color:var(--mut)}
+.complete-box .status.done{color:var(--ok);font-weight:700}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:30px}
+/* dashboard */
+.progress{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:var(--blue);width:0}
+.mods{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.mods{grid-template-columns:1fr}}
+.mod{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.mod .num{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.4px}
+.mod h3{margin:3px 0 6px;font-size:16.5px}
+.mod p{margin:0 0 12px;color:var(--mut);font-size:13.5px}
+.mod .meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px}
+.st{font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px}
+.st.ns{background:#eef2f6;color:var(--mut)}
+.st.ip{background:var(--amber-bg);color:var(--amber)}
+.st.ps{background:var(--blue-l);color:var(--blue-d)}
+.st.cp{background:var(--ok-bg);color:var(--ok)}
+.score{font-size:12.5px;color:var(--mut)}
+@media(max-width:600px){section.sec{padding:18px 16px}.hero h1{font-size:23px}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="badge" href="index.html?v=2026100701">Prowler Labs</a>
+  <span class="crumb">Module 8 of 8</span>
+  <span class="user" id="user"></span>
+</div></div>
+<div class="wrap" id="app">
+  <div class="hero">
+    <div class="kicker">Module 8</div>
+    <h1>Final check and clean-up</h1>
+    <p>Confirm you can run, read and act on Prowler results across all 10 use cases, take the final assessment, then remove every lab resource.</p>
+    <div class="chips"><span class="chip"><b>Covers:</b> all 10 use cases and all 7 frameworks</span><span class="chip"><b>Time:</b> about 60 minutes</span><span class="chip"><b>Cost:</b> returns to zero after clean-up</span></div>
+  </div>
+  <div class="limits"><h2>Limits of what Prowler checks in this module</h2><ul><li>The final scan shows the project's state at that moment. New resources or changes made later need a new scan.</li><li>Turning off a trial service changes the result of its checks. Run a scan again after any change you want to record.</li></ul></div>
+  <nav class="toc"><h3>In this module</h3><ol><li><a href="#final-scan">Step 1: Run the final scan</a></li><li><a href="#cleanup">Step 2: Remove every lab resource</a></li><li><a href="#verify">Step 3: Check that nothing is left</a></li><li><a href="#services">Step 4: Turn off trial services and stop Prowler Local Server</a></li><li><a href="#next">What to do next</a></li><li><a href="#assessment">Final assessment</a></li></ol></nav>
+  <section class="sec" id="final-scan"><h2>Step 1: Run the final scan</h2>
+<p>Run one full scan of the finished project. Every check you fixed in Modules 1 to 6 should pass. This scan is your record of the finished state.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">source ./env.sh
+pscan -o scans/m8-final
+
+# Fixed checks from all 10 use cases
+for c in cloudtrail_multi_region_enabled config_recorder_all_regions_enabled guardduty_is_enabled \
+         securityhub_enabled inspector2_is_enabled ec2_instance_imdsv2_enabled \
+         awslambda_function_no_secrets_in_variables accessanalyzer_enabled \
+         kms_cmk_rotation_enabled ec2_ebs_default_encryption vpc_flow_logs_enabled \
+         apigateway_restapi_waf_acl_attached; do
+  printf "%-46s %s\n" "$c" "$(grep -h ";$c;" scans/m8-final/*.csv | grep -o -E ';(PASS|FAIL);' | sort -u | tr -d ';\n')"
+done</code></pre></div>
+<div class="tbl"><table class=""><thead><tr><th>Use case</th><th>Module</th><th>Checks that should now pass</th></tr></thead><tbody><tr><td>1. Threat Detection</td><td>Module 2</td><td><code>guardduty_is_enabled</code>, <code>guardduty_no_high_severity_findings</code></td></tr><tr><td>2. Cloud Security Posture Management</td><td>Module 2</td><td><code>securityhub_enabled</code></td></tr><tr><td>3. Vulnerability Management</td><td>Module 3</td><td><code>inspector2_is_enabled</code>, <code>ec2_instance_imdsv2_enabled</code></td></tr><tr><td>4. Configuration Monitoring</td><td>Module 1</td><td><code>cloudtrail_multi_region_enabled</code>, <code>config_recorder_all_regions_enabled</code></td></tr><tr><td>5. Application Firewall</td><td>Module 6</td><td><code>apigateway_restapi_waf_acl_attached</code></td></tr><tr><td>6. Application Security Testing</td><td>Module 3</td><td><code>ecr_repositories_scan_images_on_push_enabled</code></td></tr><tr><td>7. Credentials Protection</td><td>Module 4</td><td><code>awslambda_function_no_secrets_in_variables</code>, <code>ec2_instance_secrets_user_data</code></td></tr><tr><td>8. Network Protection</td><td>Module 6</td><td><code>ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22</code>, <code>vpc_flow_logs_enabled</code></td></tr><tr><td>9. Key Management for Encryption</td><td>Module 5</td><td><code>kms_cmk_rotation_enabled</code>, <code>ec2_ebs_default_encryption</code></td></tr><tr><td>10. Permissions Analysis</td><td>Module 4</td><td><code>accessanalyzer_enabled</code>, <code>iam_policy_allows_privilege_escalation</code></td></tr></tbody></table></div>
+<div class="note info">If a check you fixed shows FAIL, go back to that module's after scan and compare. The most common reason is a step that did not finish, for example Inspector or Access Analyzer still processing.</div>
+</section><section class="sec" id="cleanup"><h2>Step 2: Remove every lab resource</h2>
+<p>After you pass the final assessment below, remove the lab resources so they stop costing money. Your <code>cleanup.sh</code> should now look like this. Compare it with your own file, then run it.</p>
+<div class="code"><div class="code-title">cleanup.sh (complete)</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# sf-secure-store — removes every lab resource
+# Each module adds its own block directly BELOW the "set +e" line,
+# so that the newest resources are removed first.
+cd "$(dirname "$0")"
+source ./env.sh
+set +e   # keep going if a resource is already gone
+# --- Module 6: Network Protection and Application Firewall ---
+aws wafv2 disassociate-web-acl "${A[@]}" \
+  --resource-arn "arn:aws:apigateway:$AWS_REGION::/restapis/$API_ID/stages/prod"
+LOCK=$(aws wafv2 get-web-acl "${A[@]}" --name "$PROJECT-web-acl" --scope REGIONAL \
+  --id "${WEB_ACL_ARN##*/}" --query LockToken --output text)
+aws wafv2 delete-web-acl "${A[@]}" --name "$PROJECT-web-acl" --scope REGIONAL \
+  --id "${WEB_ACL_ARN##*/}" --lock-token "$LOCK"
+aws apigateway delete-rest-api "${A[@]}" --rest-api-id "$API_ID"
+aws ec2 delete-flow-logs "${A[@]}" --flow-log-ids "$FLOW_LOG_ID"
+
+# --- Module 5: Key Management for Encryption ---
+aws ec2 delete-volume "${A[@]}" --volume-id "$VOLUME_ID"
+aws s3 rm "s3://$DATA_BUCKET" --recursive "${A[@]}"
+aws s3api delete-bucket "${A[@]}" --bucket "$DATA_BUCKET"
+aws kms delete-alias "${A[@]}" --alias-name "alias/$PROJECT-data"
+aws kms schedule-key-deletion "${A[@]}" --key-id "$KEY_ID" --pending-window-in-days 7
+# EBS default encryption stays on: it is the recommended setting for every account
+
+# --- Module 4: Credentials Protection and Permissions Analysis ---
+aws accessanalyzer delete-analyzer "${A[@]}" --analyzer-name "$PROJECT-analyzer"
+aws iam remove-user-from-group "${G[@]}" --group-name "$PROJECT-developers" --user-name "$PROJECT-dev"
+aws iam detach-group-policy "${G[@]}" --group-name "$PROJECT-developers" \
+  --policy-arn "arn:aws:iam::$ACCOUNT_ID:policy/$PROJECT-deploy"
+aws iam detach-user-policy "${G[@]}" --user-name "$PROJECT-dev" \
+  --policy-arn "arn:aws:iam::$ACCOUNT_ID:policy/$PROJECT-deploy"
+aws iam delete-group "${G[@]}" --group-name "$PROJECT-developers"
+aws iam delete-login-profile "${G[@]}" --user-name "$PROJECT-dev"
+aws iam delete-user "${G[@]}" --user-name "$PROJECT-dev"
+for v in $(aws iam list-policy-versions "${G[@]}" --policy-arn "arn:aws:iam::$ACCOUNT_ID:policy/$PROJECT-deploy" \
+           --query 'Versions[?IsDefaultVersion==`false`].VersionId' --output text); do
+  aws iam delete-policy-version "${G[@]}" --policy-arn "arn:aws:iam::$ACCOUNT_ID:policy/$PROJECT-deploy" --version-id "$v"
+done
+aws iam delete-policy "${G[@]}" --policy-arn "arn:aws:iam::$ACCOUNT_ID:policy/$PROJECT-deploy"
+aws secretsmanager delete-secret "${A[@]}" --secret-id "$PROJECT/db-password" --force-delete-without-recovery
+aws lambda delete-function "${A[@]}" --function-name "$PROJECT-rotate"
+aws iam delete-role-policy "${G[@]}" --role-name "$PROJECT-rotation-role" --policy-name rotate-db-password
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-rotation-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-rotation-role"
+aws lambda delete-function "${A[@]}" --function-name "$PROJECT-orders"
+aws iam delete-role-policy "${G[@]}" --role-name "$PROJECT-app-role" --policy-name read-db-password
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-app-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-app-role" \
+  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-app-role"
+
+# --- Module 3: Vulnerability Management and Application Security Testing ---
+aws inspector2 disable "${A[@]}" --resource-types EC2 ECR LAMBDA LAMBDA_CODE
+aws lambda delete-function "${A[@]}" --function-name "$PROJECT-report"
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-lambda-role"
+aws ecr delete-repository "${A[@]}" --repository-name "$PROJECT/api" --force
+aws ec2 terminate-instances "${A[@]}" --instance-ids "$INSTANCE_ID"
+aws ec2 wait instance-terminated "${A[@]}" --instance-ids "$INSTANCE_ID"
+aws ec2 delete-security-group "${A[@]}" --group-id "$SG_ID"
+aws iam remove-role-from-instance-profile "${G[@]}" \
+  --instance-profile-name "$PROJECT-ec2-profile" --role-name "$PROJECT-ec2-role"
+aws iam delete-instance-profile "${G[@]}" --instance-profile-name "$PROJECT-ec2-profile"
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-ec2-role"
+
+# --- Module 2: Threat Detection and Cloud Security Posture Management ---
+aws iam delete-group-policy "${G[@]}" --group-name prowler-scanners --policy-name prowler-securityhub
+aws securityhub disable-import-findings-for-product "${A[@]}" \
+  --product-subscription-arn "arn:aws:securityhub:$AWS_REGION:$ACCOUNT_ID:product-subscription/prowler/prowler"
+aws securityhub disable-security-hub "${A[@]}"
+aws guardduty delete-detector "${A[@]}" --detector-id "$DETECTOR_ID"
+
+# --- Module 1: Configuration Monitoring ---
+aws configservice stop-configuration-recorder "${A[@]}" --configuration-recorder-name default
+aws configservice delete-delivery-channel "${A[@]}" --delivery-channel-name default
+aws configservice delete-configuration-recorder "${A[@]}" --configuration-recorder-name default
+aws cloudtrail delete-trail "${A[@]}" --name "$PROJECT-trail"
+aws s3 rm "s3://$LOG_BUCKET" --recursive "${A[@]}"
+aws s3api delete-bucket "${A[@]}" --bucket "$LOG_BUCKET"
+aws s3 rm "s3://$ACCESS_LOG_BUCKET" --recursive "${A[@]}"
+aws s3api delete-bucket "${A[@]}" --bucket "$ACCESS_LOG_BUCKET"
+
+# --- Module 0: scan user, group and budget (remove only when you have finished the course) ---
+for k in $(aws iam list-access-keys "${G[@]}" --user-name prowler-scan --query 'AccessKeyMetadata[].AccessKeyId' --output text); do
+  aws iam delete-access-key "${G[@]}" --user-name prowler-scan --access-key-id "$k"
+done
+aws iam remove-user-from-group "${G[@]}" --group-name prowler-scanners --user-name prowler-scan
+aws iam delete-user "${G[@]}" --user-name prowler-scan
+aws iam detach-group-policy "${G[@]}" --group-name prowler-scanners \
+  --policy-arn arn:aws:iam::aws:policy/SecurityAudit
+aws iam detach-group-policy "${G[@]}" --group-name prowler-scanners \
+  --policy-arn arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+aws iam delete-group "${G[@]}" --group-name prowler-scanners
+aws budgets delete-budget "${G[@]}" --account-id "$ACCOUNT_ID" --budget-name "$PROJECT-budget"
+
+echo "Clean-up finished."</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">./cleanup.sh</code></pre></div>
+<div class="note warn">The Module 0 block deletes the scan user and the budget. If you want to keep scanning your account with Prowler after the course, delete that block from the script before you run it.</div>
+</section><section class="sec" id="verify"><h2>Step 3: Check that nothing is left</h2>
+<div class="code"><div class="code-title">verify-clean.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Lists anything from the lab that is still in the account. Empty output = clean.
+cd "$(dirname "$0")"
+source ./env.sh
+
+echo "== S3 buckets";          aws s3api list-buckets "${G[@]}" --query "Buckets[?starts_with(Name, '$PROJECT')].Name" --output text
+echo "== EC2 instances";       aws ec2 describe-instances "${A[@]}" --filters "Name=tag:Name,Values=$PROJECT-*" \
+                                 "Name=instance-state-name,Values=pending,running,stopping,stopped" --query 'Reservations[].Instances[].InstanceId' --output text
+echo "== EBS volumes";         aws ec2 describe-volumes "${A[@]}" --filters "Name=tag:Name,Values=$PROJECT-*" --query 'Volumes[].VolumeId' --output text
+echo "== Security groups";     aws ec2 describe-security-groups "${A[@]}" --filters "Name=group-name,Values=$PROJECT-*" --query 'SecurityGroups[].GroupId' --output text
+echo "== Lambda functions";    aws lambda list-functions "${A[@]}" --query "Functions[?starts_with(FunctionName, '$PROJECT')].FunctionName" --output text
+echo "== ECR repositories";    aws ecr describe-repositories "${A[@]}" --query "repositories[?starts_with(repositoryName, '$PROJECT')].repositoryName" --output text
+echo "== IAM roles";           aws iam list-roles "${G[@]}" --query "Roles[?starts_with(RoleName, '$PROJECT')].RoleName" --output text
+echo "== IAM users";           aws iam list-users "${G[@]}" --query "Users[?starts_with(UserName, '$PROJECT') || UserName=='prowler-scan'].UserName" --output text
+echo "== REST APIs";           aws apigateway get-rest-apis "${A[@]}" --query "items[?name=='$PROJECT-api'].id" --output text
+echo "== WAF web ACLs";        aws wafv2 list-web-acls "${A[@]}" --scope REGIONAL --query "WebACLs[?Name=='$PROJECT-web-acl'].Name" --output text
+echo "== Secrets";             aws secretsmanager list-secrets "${A[@]}" --query "SecretList[?starts_with(Name, '$PROJECT')].Name" --output text
+echo "== KMS alias";           aws kms list-aliases "${A[@]}" --query "Aliases[?AliasName=='alias/$PROJECT-data'].AliasName" --output text
+echo "== CloudTrail trail";    aws cloudtrail describe-trails "${A[@]}" --query "trailList[?Name=='$PROJECT-trail'].Name" --output text
+echo "== Config recorder";     aws configservice describe-configuration-recorder-status "${A[@]}" --query 'ConfigurationRecordersStatus[?recording].name' --output text
+echo "== GuardDuty detector";  aws guardduty list-detectors "${A[@]}" --query 'DetectorIds' --output text
+echo "== Access Analyzer";     aws accessanalyzer list-analyzers "${A[@]}" --query "analyzers[?name=='$PROJECT-analyzer'].name" --output text
+echo "== Inspector";           aws inspector2 batch-get-account-status "${A[@]}" --query 'accounts[0].state.status' --output text</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">chmod +x verify-clean.sh
+./verify-clean.sh</code></pre></div>
+<p>Every section should print nothing, except <b>Inspector</b>, which should show <code>DISABLED</code>, and <b>CloudTrail trail</b> and <b>Config recorder</b>, which should be empty. If something is still listed, run <code>./cleanup.sh</code> again: some resources, such as the security group, can only be deleted after the resources that use them are gone.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># Last scan, to record the cleaned-up state
+pscan --service ec2 awslambda s3 kms -o scans/m8-after-cleanup</code></pre></div>
+</section><section class="sec" id="services"><h2>Step 4: Turn off trial services and stop Prowler Local Server</h2>
+<p>The clean-up script already turned off GuardDuty, Security Hub, Amazon Inspector and the AWS Config recorder in ap-south-1. Check the AWS console for each service to confirm, especially if you turned any of them on in other regions.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">cd ~/prowler-local-server
+docker compose down          # stops and removes the containers
+# docker compose down -v     # also deletes the stored scan data</code></pre></div>
+<div class="note info">Changing a service's state changes the result of its checks. If you keep scanning your account later, a check such as <code>guardduty_is_enabled</code> will fail again now that GuardDuty is off. Run a new scan after any change you want to record.</div>
+</section><section class="sec" id="next"><h2>What to do next</h2><ul><li>Run Prowler against every region of an account you manage, not only ap-south-1, by removing the <code>-f</code> option.</li><li>Schedule a weekly Prowler scan and keep the reports as dated evidence.</li><li>Read the Manual requirements of the frameworks your clients care about, and list the documents and processes that would answer each one.</li><li>Look at the failures you did not fix in this course, such as root user MFA or WAF logging, and practise fixing them in a lab account.</li></ul></section>
+  <section class="sec assess" id="assessment">
+    <h2>Final assessment</h2>
+    <p>20 questions. Pass mark: 70%. You can take the assessment as many times as you need. After each attempt you will see the correct answer and a short explanation for every question.</p>
+    <div id="quiz"></div>
+    <div id="quiz-result"></div>
+    <button class="btn" id="quiz-submit" type="button">Submit answers</button>
+    <button class="btn ghost" id="quiz-retake" type="button" style="display:none">Retake the assessment</button>
+    <div class="attempts" id="attempts"></div>
+  </section>
+  <section class="sec">
+    <h2>Complete this module</h2>
+    <div class="complete-box">
+      <button class="btn" id="mark-complete" type="button" disabled>Mark module as complete</button>
+      <span class="status" id="complete-status"></span>
+    </div>
+  </section>
+  <div class="navrow"><a class="btn ghost" href="prowler-lab-m7.html?v=2026100701">&larr; Module 7</a><a class="btn" href="index.html?v=2026100701">Back to course dashboard</a></div>
+  <div class="foot">Prowler Security Compliance Labs · Module 8 · Build 2026100701</div>
+</div>
+
+
+<script>
+/* SF auth gate — Google SSO (popup, admins only) + email/password (learners).
+   Same logic as the existing SF Knowledge Hub course pages. */
+(function () {
+const firebaseConfig = {
+  apiKey: "AIzaSyC-I-IOCq2fCwa471fsD5xOn6SYQSBDp7Q",
+  authDomain: "sfcertification-grafana.firebaseapp.com",
+  projectId: "sfcertification-grafana",
+  storageBucket: "sfcertification-grafana.firebasestorage.app",
+  messagingSenderId: "227322696511",
+  appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+};
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+  const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
+  // Google SSO is restricted to these admin addresses ONLY. Everyone else signs in
+  // with email/password (that path is unchanged and still uses validDomain()).
+  const ADMIN_SSO = ["jv.ravichandran@sourcefuse.com","noushin.khan@sourcefuse.com"];
+  let auth, GoogleProvider, signInRedirect, signInPopup, getRedirect, signInEmail, onAuth, signOutFn, appMod;
+  let readyCb = null, done = false;
+
+  async function initFirebase() {
+    appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    signInPopup = (p) => authMod.signInWithPopup(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+  function styleTag(){return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:400px;box-shadow:0 12px 40px rgba(10,30,55,.25)}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 6px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--blue,#1a6eb5);border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:var(--blue-d,#12507f)}
+    .sf-g{background:#fff;color:#1a6eb5;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+  </style>`;}
+  function overlayHTML(){return `
+    <div class="sf-auth-backdrop" id="sf-auth"><div class="sf-auth-card">
+      <div class="sf-auth-badge">SF Knowledge Hub</div>
+      <h2>Prowler Security Compliance Labs</h2>
+      <p class="sf-auth-sub">Sign in with your SourceFuse Google account to access the course and save your progress.</p>
+      <button class="sf-google" id="sf-google"><span class="sf-g">G</span> Sign in with Google</button>
+      <div class="sf-or"><span>OR</span></div>
+      <label class="sf-lbl">Email</label>
+      <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+      <label class="sf-lbl">Password</label>
+      <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <button class="sf-signin" id="sf-signin">Sign in with email</button>
+      <div class="sf-err" id="sf-err"></div>
+    </div></div>`;}
+  function fail(m){const e=document.getElementById("sf-err");if(e)e.textContent=m;}
+  function validDomain(x){if(typeof x!=="string")return false;var e=x.toLowerCase();return e.endsWith("@"+ALLOWED_DOMAIN)||ALLOWED_EXTRA.includes(e);}
+  function validGoogle(x){if(typeof x!=="string")return false;return ADMIN_SSO.includes(x.toLowerCase());}
+  function isGoogleUser(u){try{return !!(u&&u.providerData&&u.providerData.some(function(p){return p&&p.providerId==="google.com";}));}catch(_){return false;}}
+  function proceed(email){if(done)return;done=true;const el=document.getElementById("sf-auth");if(el)el.remove();if(readyCb)readyCb(email,signOutFn);}
+  function wireOverlay(){
+    document.getElementById("sf-google").addEventListener("click",async()=>{
+      fail("");
+      if(!signInRedirect)return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      const p=new GoogleProvider();p.setCustomParameters({hd:ALLOWED_DOMAIN,prompt:"select_account"});
+      // Popup avoids the cross-site redirect handshake that browsers now block.
+      if(signInPopup){
+        try{
+          const r=await signInPopup(p);
+          const email=(r&&r.user&&r.user.email)||"";
+          if(!validGoogle(email)){await signOutFn();return fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          return proceed(email);
+        }catch(e){
+          console.log("[auth] signInWithPopup failed; code:",e&&e.code,"| message:",e&&e.message);
+          const blocked=e&&(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment");
+          if(!blocked)return fail("Google sign-in couldn't complete. Use email/password below.");
+        }
+      }
+      try{
+        try{sessionStorage.setItem("sf-google-pending","1");}catch(_){}
+        await signInRedirect(p);}
+      catch(e){console.log("[auth] signInWithRedirect failed; code:",e&&e.code,"| message:",e&&e.message);fail("Google sign-in couldn't start. Use email/password below.");}
+    });
+    document.getElementById("sf-signin").addEventListener("click",async()=>{
+      fail("");
+      const email=(document.getElementById("sf-email").value||"").trim();
+      const pass=document.getElementById("sf-pass").value||"";
+      if(!validDomain(email))return fail("Email must be an @sourcefuse.com address.");
+      if(!pass)return fail("Enter your password.");
+      try{const r=await signInEmail(email,pass);proceed((r.user&&r.user.email)||email);}
+      catch(e){console.log("[auth] signInEmail failed; code:",e&&e.code,"| message:",e&&e.message);fail("Incorrect email or password.");}
+    });
+  }
+  async function mount(onReady){
+    readyCb=onReady;
+    document.head.insertAdjacentHTML("beforeend",styleTag());
+    document.body.insertAdjacentHTML("beforeend",overlayHTML());
+    try{await initFirebase();}catch(e){fail("Auth service loading… (Google SSO needs the deployed https host).");}
+    if(getRedirect){
+      try{const res=await getRedirect();
+        if(res&&res.user){const email=res.user.email;
+          if(!validGoogle(email)){await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          else{proceed(email);return;}}
+        else if(sessionStorage.getItem("sf-google-pending")==="1"){
+          sessionStorage.removeItem("sf-google-pending");
+          fail("Google sign-in didn't complete (browser blocked the sign-in handshake). Use email/password below.");
+        }
+      }catch(e){
+        console.log("[auth] getRedirectResult error; code:",e&&e.code,"| message:",e&&e.message);
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    if(onAuth){onAuth(async(u)=>{
+      if(!u)return;
+      if(isGoogleUser(u)){
+        if(validGoogle(u.email))proceed(u.email);
+        else{await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+        return;
+      }
+      if(validDomain(u.email))proceed(u.email);
+    });}
+    wireOverlay();
+  }
+  window.SFAuth={mount};
+})();
+</script>
+
+
+<script>
+/* Course progress for the signed-in learner. */
+window.PLStore=(function(){
+  var PREFIX="prowlerlab_v1__";
+  function key(email){return PREFIX+String(email||"").replace(/[^a-z0-9]/gi,"_").toLowerCase();}
+  function load(email){try{var s=JSON.parse(localStorage.getItem(key(email)));if(s&&s.modules)return s;}catch(e){}return {modules:{}};}
+  function save(email,s){try{localStorage.setItem(key(email),JSON.stringify(s));}catch(e){}}
+  function mod(s,k){if(!s.modules[k])s.modules[k]={attempts:[],passed:false,bestPct:0,complete:false};return s.modules[k];}
+  return {
+    load:load,
+    get:function(email,k){return mod(load(email),k);},
+    addAttempt:function(email,k,score,total,passMark){
+      var s=load(email),m=mod(s,k),pct=Math.round(score/total*100);
+      m.attempts.push({attempt:m.attempts.length+1,score:score,total:total,pct:pct,passed:pct>=passMark,ts:Date.now()});
+      if(pct>m.bestPct)m.bestPct=pct;
+      if(pct>=passMark&&!m.passed){m.passed=true;m.passedAt=Date.now();m.passedPct=pct;}
+      save(email,s);return m;
+    },
+    complete:function(email,k){var s=load(email),m=mod(s,k);if(!m.passed)return m;m.complete=true;m.completedAt=Date.now();save(email,s);return m;}
+  };
+})();
+</script>
+
+<script>window.PL_MODULE={"key": "prowler-lab-m8", "pass": 70, "questions": [{"q": "Which AWS service did you use for use case 1, Threat Detection?", "o": ["AWS Config", "AWS KMS", "AWS WAF", "Amazon GuardDuty"], "a": 3, "e": "GuardDuty watches account activity and network logs for signs of attack."}, {"q": "Which service gives cloud security posture management in this course?", "o": ["Amazon Inspector", "AWS CloudTrail", "AWS Security Hub (Security Hub CSPM)", "IAM Access Analyzer"], "a": 2, "e": "Security Hub runs security standards against your settings and collects findings from many tools in one place."}, {"q": "Why was AWS Config set up before Security Hub?", "o": ["AWS Config is cheaper", "Security Hub's standards run as AWS Config rules", "GuardDuty needs it", "Prowler needs AWS Config to scan"], "a": 1, "e": "Security Hub uses AWS Config rules for its standards, so the recorder must be running."}, {"q": "A CloudTrail trail recorded only ap-south-1. What was the risk?", "o": ["Higher cost", "Prowler could not scan", "Log files were public", "Activity in other regions left no record"], "a": 3, "e": "A single-region trail misses everything that happens in other regions."}, {"q": "Why was the Lambda code in Module 3 a weakness?", "o": ["It had no role", "It used an old Python version", "It wrote to S3", "It joined caller input into a shell command"], "a": 3, "e": "Joining caller input into a shell command lets an attacker run extra commands (command injection)."}, {"q": "What does instance metadata version 2 protect against?", "o": ["Open SSH ports", "Unencrypted volumes", "Request forgery attacks that try to read the instance role's credentials", "Disk failure"], "a": 2, "e": "Version 2 needs a session token, which blocks many request forgery attempts to read credentials from the metadata service."}, {"q": "Where should an application's database password be stored?", "o": ["In the source code", "In EC2 user data", "In a Lambda environment variable", "In AWS Secrets Manager, read by the application when needed"], "a": 3, "e": "Secrets Manager stores the secret encrypted, controls who can read it and can rotate it."}, {"q": "What did the original deploy policy allow that made privilege escalation possible?", "o": ["Creating S3 buckets", "Turning on MFA", "Passing any role to a new Lambda function and running it", "Reading CloudTrail logs"], "a": 2, "e": "PassRole on any role with CreateFunction and InvokeFunction lets a user run code with a more powerful role."}, {"q": "Why must permissions be attached to groups or roles instead of users?", "o": ["It keeps permissions easier to review and is a CIS recommendation", "It is required by AWS billing", "Users cannot have permissions", "It makes scans faster"], "a": 0, "e": "Group and role permissions are easier to review and manage. CIS checks for policies attached directly to users."}, {"q": "How do you encrypt an existing unencrypted EBS volume?", "o": ["Attach it to a new instance", "Change the volume type", "Create an encrypted copy from a snapshot and replace the old volume", "Turn on default encryption"], "a": 2, "e": "EBS volumes cannot be encrypted in place. You copy them through a snapshot into a new encrypted volume."}, {"q": "What does a key policy with the principal <code>*<\/code> mean?", "o": ["Only the root user can use the key", "The key rotates", "Any AWS account is allowed the listed actions", "The key is disabled"], "a": 2, "e": "<code>*<\/code> as a principal means any AWS account, so the key policy is public."}, {"q": "How did you reach the EC2 instance after closing SSH and Remote Desktop?", "o": ["Through AWS WAF", "With an access key in user data", "With Systems Manager Session Manager, which needs no inbound port", "Through the default security group"], "a": 2, "e": "The Session Manager agent connects out to AWS, so no inbound port is needed."}, {"q": "What does Prowler check about AWS WAF?", "o": ["That someone reviews WAF logs", "That a web ACL with rules is attached to the API", "That the rules suit your application", "That it blocks every attack"], "a": 1, "e": "Prowler checks the settings. Testing whether rules stop real attacks is outside what it checks."}, {"q": "What does a Prowler finding with status <b>MANUAL<\/b> need?", "o": ["A rescan with administrator access", "Nothing", "A person to review it and provide evidence", "A different region"], "a": 2, "e": "Manual requirements cannot be checked automatically. A person must review them and provide evidence."}, {"q": "Which check status means the check could not run, for example because of a missing permission?", "o": ["FAIL", "MANUAL", "An error, which is not a pass", "PASS"], "a": 2, "e": "An error means there is no result. Fix the permission and scan again."}, {"q": "What does the compliance <b>score<\/b> on a framework card show?", "o": ["The audit result", "The percentage of evaluated requirements that pass", "The number of critical findings", "The cost of the account"], "a": 1, "e": "The score is the share of evaluated requirements that pass, without weighing their importance."}, {"q": "You pass almost every HIPAA requirement in the Prowler report. What can you say?", "o": ["The AWS technical settings checked support many HIPAA safeguards; policies, processes and contracts still need review", "HIPAA does not apply to AWS", "No further evidence is needed", "The organisation is HIPAA compliant"], "a": 0, "e": "The report only covers AWS technical settings. HIPAA also needs administrative safeguards, policies and agreements."}, {"q": "Which framework in this course is mostly a technical settings checklist?", "o": ["CIS AWS Foundations Benchmark", "ISO 27001", "SOC 2", "GDPR"], "a": 0, "e": "CIS lists recommended AWS settings that can almost all be checked automatically."}, {"q": "Why did every module use the read-only <code>prowler-scan<\/code> profile?", "o": ["It costs less", "Prowler refuses admin profiles", "Scans only need to read settings, so read-only access is safer", "The admin profile is slower"], "a": 2, "e": "Prowler only reads settings. A read-only profile cannot change or damage anything."}, {"q": "Why must the lab resources be removed at the end?", "o": ["The assessment requires it", "Some services keep charging money, and weak settings left behind are a risk", "Prowler stops working otherwise", "AWS deletes the account otherwise"], "a": 1, "e": "Paid services keep charging while they exist, and left-over resources are an unnecessary risk."}]};</script>
+<script>
+(function(){
+  var CFG=window.PL_MODULE;
+  function $(s,r){return (r||document).querySelector(s);}
+  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+
+  // Copy buttons on code blocks
+  $$(".code .copy").forEach(function(b){
+    b.addEventListener("click",function(){
+      var t=b.parentNode.querySelector("code").innerText;
+      var done=function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy";},1400);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+      else{var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){}document.body.removeChild(ta);}
+    });
+  });
+
+  function renderQuiz(){
+    var box=$("#quiz");var html="";
+    CFG.questions.forEach(function(q,i){
+      html+='<div class="q" data-i="'+i+'"><div class="q-t">'+(i+1)+'. '+q.q+'</div>';
+      q.o.forEach(function(o,j){
+        html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>';
+      });
+      html+='<div class="expl"></div></div>';
+    });
+    box.innerHTML=html;
+    $("#quiz-result").innerHTML="";
+    $("#quiz-submit").style.display="";
+    $("#quiz-retake").style.display="none";
+  }
+
+  function grade(email){
+    var answers=[],missing=0;
+    CFG.questions.forEach(function(q,i){
+      var c=$('input[name="q'+i+'"]:checked');
+      if(!c)missing++;answers.push(c?parseInt(c.value,10):-1);
+    });
+    if(missing){$("#quiz-result").innerHTML='<div class="result fail">Answer all questions before you submit. '+missing+' question'+(missing>1?'s are':' is')+' not answered yet.</div>';return;}
+    var score=0;
+    CFG.questions.forEach(function(q,i){
+      var qe=$('.q[data-i="'+i+'"]');qe.classList.add("done");
+      $$("input",qe).forEach(function(inp){inp.disabled=true;});
+      var labels=$$("label.opt",qe);
+      labels[q.a].classList.add("right");
+      var ok=answers[i]===q.a;if(ok)score++;else labels[answers[i]].classList.add("wrong");
+      $(".expl",qe).innerHTML=(ok?'<b class="r">Correct.</b> ':'<b class="w">Not correct.</b> The correct answer is: <b>'+q.o[q.a]+'</b>. ')+q.e;
+    });
+    var total=CFG.questions.length;
+    var m=window.PLStore.addAttempt(email,CFG.key,score,total,CFG.pass);
+    var pct=Math.round(score/total*100);
+    var passed=pct>=CFG.pass;
+    $("#quiz-result").innerHTML='<div class="result '+(passed?'pass':'fail')+'">'+
+      (passed?'You passed: ':'Not passed yet: ')+score+' of '+total+' correct ('+pct+'%). Pass mark: '+CFG.pass+'%.'+
+      '<small>'+(passed?'You can now mark this module as complete.':'Read the explanations under each question, review the module, and try again. You can retake the assessment as many times as you need.')+'</small></div>';
+    $("#quiz-submit").style.display="none";
+    $("#quiz-retake").style.display="";
+    refresh(email);
+    $("#quiz-result").scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+  function refresh(email){
+    var m=window.PLStore.get(email,CFG.key);
+    var att=m.attempts.length;
+    $("#attempts").textContent=att?('Attempts: '+att+' · Best score: '+m.bestPct+'%'+(m.passed?' · Passed':'')):'No attempts yet.';
+    var btn=$("#mark-complete"),st=$("#complete-status");
+    if(m.complete){btn.disabled=true;btn.textContent="Module completed";st.textContent="Completed on "+new Date(m.completedAt).toLocaleDateString();st.className="status done";}
+    else if(m.passed){btn.disabled=false;btn.textContent="Mark module as complete";st.textContent="Assessment passed. You can now mark this module as complete.";st.className="status";}
+    else{btn.disabled=true;btn.textContent="Mark module as complete";st.textContent="Locked until you pass the module assessment ("+CFG.pass+"% or more).";st.className="status";}
+  }
+
+  window.SFAuth.mount(function(email,signOut){
+    $("#user").innerHTML=email+' <button class="signout" id="signout">Sign out</button>';
+    var so=$("#signout");if(so&&signOut)so.onclick=function(){signOut().then(function(){location.reload();});};
+    $("#app").style.display="block";
+    renderQuiz();
+    $("#quiz-submit").onclick=function(){grade(email);};
+    $("#quiz-retake").onclick=function(){renderQuiz();$("#assessment").scrollIntoView({behavior:"smooth"});};
+    $("#mark-complete").onclick=function(){window.PLStore.complete(email,CFG.key);refresh(email);};
+    refresh(email);
+  });
+})();
+</script>
+
+</body></html>
